@@ -1,0 +1,28 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npmrc
+5 silly config load:file:C:\Users\jkq\.npmrc
+6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
+7 verbose title npm install esbuild
+8 verbose argv "install" "--save-dev" "esbuild" "--cache" "C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\.npm-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_17_32_230Z-
+10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_17_32_230Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest esbuild@^0.27.7
+16 silly packumentCache full:https://registry.npmjs.org/esbuild cache-miss
+17 http cache https://registry.npmjs.org/esbuild 117ms (cache hit)
+18 silly packumentCache full:https://registry.npmjs.org/esbuild set size:1254708 disposed:false
+19 silly placeDep ROOT esbuild@0.27.7 REPLACE for: @anthropic-ai/claude-code-source@2.1.88 want: ^0.27.7
+20 silly reify moves {}
+21 silly audit report null
+22 verbose cwd C:\Users\jkq\work\workspace\claude-code-source-code-main
+23 verbose os Windows_NT 10.0.26100
+24 verbose node v24.11.0
+25 verbose npm  v11.6.1
+26 verbose exit 0
+27 info ok

@@ -1,0 +1,414 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npmrc
+5 silly config load:file:C:\Users\jkq\.npmrc
+6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
+7 verbose title npm install @commander-js/extra-typings
+8 verbose argv "install" "@commander-js/extra-typings" "--save" "--prefer-online" "--offline" "false"
+9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_21_007Z-
+10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_21_007Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest @commander-js/extra-typings@*
+16 silly packumentCache full:https://registry.npmjs.org/@commander-js%2fextra-typings cache-miss
+17 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules/@ant
+18 http fetch GET 200 https://registry.npmjs.org/@commander-js%2fextra-typings 1269ms (cache miss)
+19 silly packumentCache full:https://registry.npmjs.org/@commander-js%2fextra-typings set size:undefined disposed:false
+20 silly fetch manifest commander@~14.0.0
+21 silly packumentCache full:https://registry.npmjs.org/commander cache-miss
+22 http fetch GET 200 https://registry.npmjs.org/commander 220ms (cache revalidated)
+23 silly packumentCache full:https://registry.npmjs.org/commander set size:306325 disposed:false
+24 silly placeDep ROOT @commander-js/extra-typings@14.0.0 OK for: @anthropic-ai/claude-code-source@2.1.88 want: *
+25 silly placeDep ROOT commander@14.0.3 REPLACE for: @commander-js/extra-typings@14.0.0 want: ~14.0.0
+26 silly fetch manifest commander@^12.1.0
+27 silly packumentCache full:https://registry.npmjs.org/commander cache-hit
+28 silly placeDep node_modules/@anthropic-ai/sandbox-runtime commander@12.1.0 OK for: @anthropic-ai/sandbox-runtime@0.0.49 want: ^12.1.0
+29 silly reify mark retired [
+29 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\commander'
+29 silly reify ]
+30 silly reify mark retired [
+30 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@ant\\claude-for-chrome-mcp'
+30 silly reify ]
+31 silly reify moves {
+31 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\commander': 'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\.commander-NdMm4RYD',
+31 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@ant\\claude-for-chrome-mcp': 'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@ant\\.claude-for-chrome-mcp-p45549Sv'
+31 silly reify }
+32 silly audit bulk request {
+32 silly audit   '@alcalzone/ansi-tokenize': [ '0.3.0' ],
+32 silly audit   '@anthropic-ai/sandbox-runtime': [ '0.0.49' ],
+32 silly audit   zod: [ '3.25.76', '4.3.6' ],
+32 silly audit   '@anthropic-ai/sdk': [ '0.87.0' ],
+32 silly audit   '@babel/runtime': [ '7.29.2' ],
+32 silly audit   '@esbuild/aix-ppc64': [ '0.27.7' ],
+32 silly audit   '@esbuild/android-arm': [ '0.27.7' ],
+32 silly audit   '@esbuild/android-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/android-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/darwin-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/darwin-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/freebsd-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/freebsd-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-arm': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-ia32': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-loong64': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-mips64el': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-ppc64': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-riscv64': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-s390x': [ '0.27.7' ],
+32 silly audit   '@esbuild/linux-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/netbsd-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/netbsd-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/openbsd-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/openbsd-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/openharmony-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/sunos-x64': [ '0.27.7' ],
+32 silly audit   '@esbuild/win32-arm64': [ '0.27.7' ],
+32 silly audit   '@esbuild/win32-ia32': [ '0.27.7' ],
+32 silly audit   '@esbuild/win32-x64': [ '0.27.7' ],
+32 silly audit   '@growthbook/growthbook': [ '1.6.5' ],
+32 silly audit   '@hono/node-server': [ '1.19.13' ],
+32 silly audit   '@modelcontextprotocol/sdk': [ '1.29.0' ],
+32 silly audit   '@opentelemetry/api': [ '1.9.1' ],
+32 silly audit   '@opentelemetry/api-logs': [ '0.214.0' ],
+32 silly audit   '@opentelemetry/core': [ '2.6.1' ],
+32 silly audit   '@opentelemetry/resources': [ '2.6.1' ],
+32 silly audit   '@opentelemetry/sdk-logs': [ '0.214.0' ],
+32 silly audit   '@opentelemetry/sdk-metrics': [ '2.6.1' ],
+32 silly audit   '@opentelemetry/sdk-trace-base': [ '2.6.1' ],
+32 silly audit   '@opentelemetry/semantic-conventions': [ '1.40.0' ],
+32 silly audit   '@pondwader/socks5-server': [ '1.0.10' ],
+32 silly audit   '@sec-ant/readable-stream': [ '0.4.1' ],
+32 silly audit   '@sindresorhus/merge-streams': [ '4.0.0' ],
+32 silly audit   accepts: [ '2.0.0' ],
+32 silly audit   'mime-db': [ '1.54.0', '1.52.0' ],
+32 silly audit   'mime-types': [ '3.0.2', '2.1.35' ],
+32 silly audit   'agent-base': [ '9.0.0' ],
+32 silly audit   ajv: [ '8.18.0' ],
+32 silly audit   'ajv-formats': [ '3.0.1' ],
+32 silly audit   'ansi-regex': [ '6.2.2', '5.0.1' ],
+32 silly audit   'ansi-styles': [ '6.2.3', '4.3.0' ],
+32 silly audit   asciichart: [ '1.5.25' ],
+32 silly audit   asynckit: [ '0.4.0' ],
+32 silly audit   'auto-bind': [ '5.0.1' ],
+32 silly audit   axios: [ '1.15.0' ],
+32 silly audit   'bidi-js': [ '1.0.3' ],
+32 silly audit   'body-parser': [ '2.2.2' ],
+32 silly audit   bytes: [ '3.1.2' ],
+32 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+32 silly audit   'call-bound': [ '1.0.4' ],
+32 silly audit   camelcase: [ '5.3.1' ],
+32 silly audit   chalk: [ '5.6.2' ],
+32 silly audit   chokidar: [ '5.0.0' ],
+32 silly audit   'cli-boxes': [ '4.0.1' ],
+32 silly audit   cliui: [ '6.0.0' ],
+32 silly audit   'emoji-regex': [ '8.0.0', '10.6.0' ],
+32 silly audit   'is-fullwidth-code-point': [ '3.0.0', '5.1.0' ],
+32 silly audit   'string-width': [ '4.2.3', '8.2.0' ],
+32 silly audit   'strip-ansi': [ '6.0.1', '7.2.0' ],
+32 silly audit   'wrap-ansi': [ '6.2.0', '10.0.0' ],
+32 silly audit   'code-excerpt': [ '4.0.0' ],
+32 silly audit   'color-convert': [ '2.0.1' ],
+32 silly audit   'color-diff-napi': [ '0.0.1' ],
+32 silly audit   'color-name': [ '1.1.4' ],
+32 silly audit   'combined-stream': [ '1.0.8' ],
+32 silly audit   commander: [ '2.20.3', '14.0.3', '12.1.0' ],
+32 silly audit   'content-disposition': [ '1.1.0' ],
+32 silly audit   'content-type': [ '1.0.5' ],
+32 silly audit   'convert-to-spaces': [ '2.0.1' ],
+32 silly audit   cookie: [ '0.7.2' ],
+32 silly audit   'cookie-signature': [ '1.2.2' ],
+32 silly audit   cors: [ '2.8.6' ],
+32 silly audit   'cross-spawn': [ '7.0.6' ],
+32 silly audit   cssfilter: [ '0.0.10' ],
+32 silly audit   debug: [ '4.4.3' ],
+32 silly audit   decamelize: [ '1.2.0' ],
+32 silly audit   'delayed-stream': [ '1.0.0' ],
+32 silly audit   depd: [ '2.0.0' ],
+32 silly audit   diff: [ '8.0.4' ],
+32 silly audit   dijkstrajs: [ '1.0.3' ],
+32 silly audit   'dom-mutator': [ '0.6.0' ],
+32 silly audit   'dunder-proto': [ '1.0.1' ],
+32 silly audit   'ee-first': [ '1.1.1' ],
+32 silly audit   encodeurl: [ '2.0.0' ],
+32 silly audit   'env-paths': [ '4.0.0' ],
+32 silly audit   'es-define-property': [ '1.0.1' ],
+32 silly audit   'es-errors': [ '1.3.0' ],
+32 silly audit   'es-object-atoms': [ '1.1.1' ],
+32 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+32 silly audit   esbuild: [ '0.27.7' ],
+32 silly audit   'escape-html': [ '1.0.3' ],
+32 silly audit   'escape-string-regexp': [ '2.0.0' ],
+32 silly audit   etag: [ '1.8.1' ],
+32 silly audit   eventsource: [ '3.0.7' ],
+32 silly audit   'eventsource-parser': [ '3.0.6' ],
+32 silly audit   execa: [ '9.6.1' ],
+32 silly audit   express: [ '5.2.1' ],
+32 silly audit   'express-rate-limit': [ '8.3.2' ],
+32 silly audit   'fast-deep-equal': [ '3.1.3' ],
+32 silly audit   'fast-uri': [ '3.1.0' ],
+32 silly audit   figures: [ '6.1.0' ],
+32 silly audit   finalhandler: [ '2.1.1' ],
+32 silly audit   'find-up': [ '4.1.0' ],
+32 silly audit   'follow-redirects': [ '1.15.11' ],
+32 silly audit   'form-data': [ '4.0.5' ],
+32 silly audit   forwarded: [ '0.2.0' ],
+32 silly audit   fresh: [ '2.0.0' ],
+32 silly audit   'function-bind': [ '1.1.2' ],
+32 silly audit   'fuse.js': [ '7.3.0' ],
+32 silly audit   'get-caller-file': [ '2.0.5' ],
+32 silly audit   'get-east-asian-width': [ '1.5.0' ],
+32 silly audit   'get-intrinsic': [ '1.3.0' ],
+32 silly audit   'get-proto': [ '1.0.1' ],
+32 silly audit   'get-stream': [ '9.0.1' ],
+32 silly audit   gopd: [ '1.2.0' ],
+32 silly audit   'has-flag': [ '5.0.1' ],
+32 silly audit   'has-symbols': [ '1.1.0' ],
+32 silly audit   'has-tostringtag': [ '1.0.2' ],
+32 silly audit   hasown: [ '2.0.2' ],
+32 silly audit   hono: [ '4.12.12' ],
+32 silly audit   'http-errors': [ '2.0.1' ],
+32 silly audit   'https-proxy-agent': [ '9.0.0' ],
+32 silly audit   'human-signals': [ '8.0.1' ],
+32 silly audit   'iconv-lite': [ '0.7.2' ],
+32 silly audit   ignore: [ '7.0.5' ],
+32 silly audit   'indent-string': [ '5.0.0' ],
+32 silly audit   inherits: [ '2.0.4' ],
+32 silly audit   'ip-address': [ '10.1.0' ],
+32 silly audit   'ipaddr.js': [ '1.9.1' ],
+32 silly audit   'is-plain-obj': [ '4.1.0' ],
+32 silly audit   'is-promise': [ '4.0.0' ],
+32 silly audit   'is-safe-filename': [ '0.1.1' ],
+32 silly audit   'is-stream': [ '4.0.1' ],
+32 silly audit   'is-unicode-supported': [ '2.1.0' ],
+32 silly audit   isexe: [ '2.0.0' ],
+32 silly audit   jose: [ '6.2.2' ],
+32 silly audit   'json-schema-to-ts': [ '3.1.1' ],
+32 silly audit   'json-schema-traverse': [ '1.0.0' ],
+32 silly audit   'json-schema-typed': [ '8.0.2' ],
+32 silly audit   'jsonc-parser': [ '3.3.1' ],
+32 silly audit   'locate-path': [ '5.0.0' ],
+32 silly audit   'lodash-es': [ '4.18.1' ],
+32 silly audit   'lodash.debounce': [ '4.0.8' ],
+32 silly audit   'lru-cache': [ '11.3.3' ],
+32 silly audit   marked: [ '18.0.0' ],
+32 silly audit   'math-intrinsics': [ '1.1.0' ],
+32 silly audit   'media-typer': [ '1.1.0' ],
+32 silly audit   'merge-descriptors': [ '2.0.0' ],
+32 silly audit   ms: [ '2.1.3' ],
+32 silly audit   negotiator: [ '1.0.0' ],
+32 silly audit   'npm-run-path': [ '6.0.0' ],
+32 silly audit   'path-key': [ '4.0.0', '3.1.1' ],
+32 silly audit   'object-assign': [ '4.1.1' ],
+32 silly audit   'object-inspect': [ '1.13.4' ],
+32 silly audit   'on-finished': [ '2.4.1' ],
+32 silly audit   once: [ '1.4.0' ],
+32 silly audit   'p-limit': [ '2.3.0' ],
+32 silly audit   'p-locate': [ '4.1.0' ],
+32 silly audit   'p-map': [ '7.0.4' ],
+32 silly audit   'p-try': [ '2.2.0' ],
+32 silly audit   'parse-ms': [ '4.0.0' ],
+32 silly audit   parseurl: [ '1.3.3' ],
+32 silly audit   'path-exists': [ '4.0.0' ],
+32 silly audit   'path-to-regexp': [ '8.4.2' ],
+32 silly audit   picomatch: [ '4.0.4' ],
+32 silly audit   'pkce-challenge': [ '5.0.1' ],
+32 silly audit   pngjs: [ '5.0.0' ],
+32 silly audit   'pretty-ms': [ '9.3.0' ],
+32 silly audit   'proxy-addr': [ '2.0.7' ],
+32 silly audit   'proxy-from-env': [ '2.1.0' ],
+32 silly audit   qrcode: [ '1.5.4' ],
+32 silly audit   qs: [ '6.15.1' ],
+32 silly audit   'range-parser': [ '1.2.1' ],
+32 silly audit   'raw-body': [ '3.0.2' ],
+32 silly audit   react: [ '19.2.5' ],
+32 silly audit   'react-reconciler': [ '0.33.0' ],
+32 silly audit   readdirp: [ '5.0.0' ],
+32 silly audit   'require-directory': [ '2.1.1' ],
+32 silly audit   'require-from-string': [ '2.0.2' ],
+32 silly audit   'require-main-filename': [ '2.0.0' ],
+32 silly audit   router: [ '2.2.0' ],
+32 silly audit   'safer-buffer': [ '2.1.2' ],
+32 silly audit   scheduler: [ '0.27.0' ],
+32 silly audit   semver: [ '7.7.4' ],
+32 silly audit   send: [ '1.2.1' ],
+32 silly audit   'serve-static': [ '2.2.1' ],
+32 silly audit   'set-blocking': [ '2.0.0' ],
+32 silly audit   setprototypeof: [ '1.2.0' ],
+32 silly audit   'shebang-command': [ '2.0.0' ],
+32 silly audit   'shebang-regex': [ '3.0.0' ],
+32 silly audit   'shell-quote': [ '1.8.3' ],
+32 silly audit   'side-channel': [ '1.1.0' ],
+32 silly audit   'side-channel-list': [ '1.0.1' ],
+32 silly audit   'side-channel-map': [ '1.0.1' ],
+32 silly audit   'side-channel-weakmap': [ '1.0.2' ],
+32 silly audit   'signal-exit': [ '4.1.0' ],
+32 silly audit   'stack-utils': [ '2.0.6' ],
+32 silly audit   statuses: [ '2.0.2' ],
+32 silly audit   'strip-final-newline': [ '4.0.0' ],
+32 silly audit   'supports-color': [ '10.2.2' ],
+32 silly audit   'supports-hyperlinks': [ '4.4.0' ],
+32 silly audit   toidentifier: [ '1.0.1' ],
+32 silly audit   'tree-kill': [ '1.2.2' ],
+32 silly audit   'ts-algebra': [ '2.0.0' ],
+32 silly audit   'type-is': [ '2.0.1' ],
+32 silly audit   typescript: [ '6.0.2' ],
+32 silly audit   'unicorn-magic': [ '0.3.0' ],
+32 silly audit   unpipe: [ '1.0.0' ],
+32 silly audit   'usehooks-ts': [ '3.1.1' ],
+32 silly audit   vary: [ '1.1.2' ],
+32 silly audit   'vscode-jsonrpc': [ '8.2.1' ],
+32 silly audit   which: [ '2.0.2' ],
+32 silly audit   'which-module': [ '2.0.1' ],
+32 silly audit   wrappy: [ '1.0.2' ],
+32 silly audit   xss: [ '1.0.15' ],
+32 silly audit   y18n: [ '4.0.3' ],
+32 silly audit   yargs: [ '15.4.1' ],
+32 silly audit   'yargs-parser': [ '18.1.3' ],
+32 silly audit   yoctocolors: [ '2.1.2' ],
+32 silly audit   'zod-to-json-schema': [ '3.25.2' ],
+32 silly audit   '@commander-js/extra-typings': [ '14.0.0' ]
+32 silly audit }
+33 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\win32-ia32
+34 silly reify mark deleted [
+34 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\win32-ia32'
+34 silly reify ]
+35 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\win32-arm64
+36 silly reify mark deleted [
+36 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\win32-arm64'
+36 silly reify ]
+37 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\sunos-x64
+38 silly reify mark deleted [
+38 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\sunos-x64'
+38 silly reify ]
+39 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\openharmony-arm64
+40 silly reify mark deleted [
+40 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\openharmony-arm64'
+40 silly reify ]
+41 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\openbsd-x64
+42 silly reify mark deleted [
+42 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\openbsd-x64'
+42 silly reify ]
+43 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\openbsd-arm64
+44 silly reify mark deleted [
+44 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\openbsd-arm64'
+44 silly reify ]
+45 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\netbsd-x64
+46 silly reify mark deleted [
+46 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\netbsd-x64'
+46 silly reify ]
+47 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\netbsd-arm64
+48 silly reify mark deleted [
+48 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\netbsd-arm64'
+48 silly reify ]
+49 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-x64
+50 silly reify mark deleted [
+50 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-x64'
+50 silly reify ]
+51 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-s390x
+52 silly reify mark deleted [
+52 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-s390x'
+52 silly reify ]
+53 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-riscv64
+54 silly reify mark deleted [
+54 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-riscv64'
+54 silly reify ]
+55 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-ppc64
+56 silly reify mark deleted [
+56 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-ppc64'
+56 silly reify ]
+57 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-mips64el
+58 silly reify mark deleted [
+58 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-mips64el'
+58 silly reify ]
+59 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-loong64
+60 silly reify mark deleted [
+60 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-loong64'
+60 silly reify ]
+61 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-ia32
+62 silly reify mark deleted [
+62 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-ia32'
+62 silly reify ]
+63 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-arm64
+64 silly reify mark deleted [
+64 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-arm64'
+64 silly reify ]
+65 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\linux-arm
+66 silly reify mark deleted [
+66 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\linux-arm'
+66 silly reify ]
+67 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\freebsd-x64
+68 silly reify mark deleted [
+68 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\freebsd-x64'
+68 silly reify ]
+69 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\freebsd-arm64
+70 silly reify mark deleted [
+70 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\freebsd-arm64'
+70 silly reify ]
+71 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\darwin-x64
+72 silly reify mark deleted [
+72 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\darwin-x64'
+72 silly reify ]
+73 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\darwin-arm64
+74 silly reify mark deleted [
+74 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\darwin-arm64'
+74 silly reify ]
+75 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\android-x64
+76 silly reify mark deleted [
+76 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\android-x64'
+76 silly reify ]
+77 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\android-arm64
+78 silly reify mark deleted [
+78 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\android-arm64'
+78 silly reify ]
+79 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\android-arm
+80 silly reify mark deleted [
+80 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\android-arm'
+80 silly reify ]
+81 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\aix-ppc64
+82 silly reify mark deleted [
+82 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\aix-ppc64'
+82 silly reify ]
+83 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 220ms
+84 silly audit report {}
+85 http fetch GET 200 https://registry.npmjs.org/@commander-js/extra-typings/-/extra-typings-14.0.0.tgz 768ms (cache miss)
+86 http fetch GET 200 https://registry.npmjs.org/commander/-/commander-14.0.3.tgz 992ms (cache miss)
+87 http fetch GET 200 https://registry.npmjs.org/commander/-/commander-12.1.0.tgz 1001ms (cache revalidated)
+88 silly ADD node_modules/@commander-js/extra-typings
+89 silly ADD node_modules/@esbuild/win32-ia32
+90 silly ADD node_modules/@esbuild/win32-arm64
+91 silly ADD node_modules/@esbuild/sunos-x64
+92 silly ADD node_modules/@esbuild/openharmony-arm64
+93 silly ADD node_modules/@esbuild/openbsd-x64
+94 silly ADD node_modules/@esbuild/openbsd-arm64
+95 silly ADD node_modules/@esbuild/netbsd-x64
+96 silly ADD node_modules/@esbuild/netbsd-arm64
+97 silly ADD node_modules/@esbuild/linux-x64
+98 silly ADD node_modules/@esbuild/linux-s390x
+99 silly ADD node_modules/@esbuild/linux-riscv64
+100 silly ADD node_modules/@esbuild/linux-ppc64
+101 silly ADD node_modules/@esbuild/linux-mips64el
+102 silly ADD node_modules/@esbuild/linux-loong64
+103 silly ADD node_modules/@esbuild/linux-ia32
+104 silly ADD node_modules/@esbuild/linux-arm64
+105 silly ADD node_modules/@esbuild/linux-arm
+106 silly ADD node_modules/@esbuild/freebsd-x64
+107 silly ADD node_modules/@esbuild/freebsd-arm64
+108 silly ADD node_modules/@esbuild/darwin-x64
+109 silly ADD node_modules/@esbuild/darwin-arm64
+110 silly ADD node_modules/@esbuild/android-x64
+111 silly ADD node_modules/@esbuild/android-arm64
+112 silly ADD node_modules/@esbuild/android-arm
+113 silly ADD node_modules/@esbuild/aix-ppc64
+114 silly ADD node_modules/@anthropic-ai/sandbox-runtime/node_modules/commander
+115 silly REMOVE node_modules/@ant/claude-for-chrome-mcp
+116 silly CHANGE node_modules/commander
+117 verbose cwd C:\Users\jkq\work\workspace\claude-code-source-code-main
+118 verbose os Windows_NT 10.0.26100
+119 verbose node v24.11.0
+120 verbose npm  v11.6.1
+121 verbose exit 0
+122 info ok

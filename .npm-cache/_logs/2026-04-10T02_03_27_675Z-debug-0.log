@@ -1,0 +1,48 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npmrc
+5 silly config load:file:C:\Users\jkq\.npmrc
+6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
+7 verbose title npm install @ant/claude-for-chrome-mcp
+8 verbose argv "install" "@ant/claude-for-chrome-mcp" "--save" "--prefer-online" "--offline" "false"
+9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_27_675Z-
+10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_27_675Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest @ant/claude-for-chrome-mcp@*
+16 silly packumentCache full:https://registry.npmjs.org/@ant%2fclaude-for-chrome-mcp cache-miss
+17 http fetch GET 404 https://registry.npmjs.org/@ant%2fclaude-for-chrome-mcp 743ms (cache skip)
+18 silly placeDep ROOT @ant/claude-for-chrome-mcp@ OK for: @anthropic-ai/claude-code-source@2.1.88 want: *
+19 verbose stack HttpErrorGeneral: 404 Not Found - GET https://registry.npmjs.org/@ant%2fclaude-for-chrome-mcp - Not found
+19 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-fetch\lib\check-response.js:103:15
+19 verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+19 verbose stack     at async RegistryFetcher.packument (C:\Program Files\nodejs\node_modules\npm\node_modules\pacote\lib\registry.js:90:19)
+19 verbose stack     at async RegistryFetcher.manifest (C:\Program Files\nodejs\node_modules\npm\node_modules\pacote\lib\registry.js:128:23)
+19 verbose stack     at async #fetchManifest (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:1214:20)
+19 verbose stack     at async #nodeFromEdge (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:1052:19)
+19 verbose stack     at async #buildDepStep (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:916:11)
+19 verbose stack     at async Arborist.buildIdealTree (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:182:7)
+19 verbose stack     at async Promise.all (index 1)
+19 verbose stack     at async Arborist.reify (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:117:5)
+20 verbose statusCode 404
+21 verbose pkgid @ant/claude-for-chrome-mcp@*
+22 error code E404
+23 error 404 Not Found - GET https://registry.npmjs.org/@ant%2fclaude-for-chrome-mcp - Not found
+24 error 404
+25 error 404  The requested resource '@ant/claude-for-chrome-mcp@*' could not be found or you do not have permission to access it.
+26 error 404
+27 error 404 Note that you can also install from a
+28 error 404 tarball, folder, http url, or git url.
+29 silly unfinished npm timer reify 1775786608696
+30 silly unfinished npm timer reify:loadTrees 1775786608697
+31 verbose cwd C:\Users\jkq\work\workspace\claude-code-source-code-main
+32 verbose os Windows_NT 10.0.26100
+33 verbose node v24.11.0
+34 verbose npm  v11.6.1
+35 verbose exit 1
+36 verbose code 1
+37 error A complete log of this run can be found in: C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_27_675Z-debug-0.log
