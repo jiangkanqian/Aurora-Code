@@ -1,6 +1,6 @@
 # Aurora Code v1.0.0 — ソースコード分析
 
-> **免責事項**: 本リポジトリのすべてのソースコードは **AnthropicおよびClaude** の知的財産です。本リポジトリは技術研究、学習、教育目的の交流のためにのみ提供されます。**商用利用は厳禁です。** いかなる個人、機関、団体も、本コンテンツを商業目的、営利活動、違法行為、その他の無許可の用途に使用することはできません。本コンテンツがお客様の法的権利、知的財産権、その他の利益を侵害する場合は、ご連絡いただければ直ちに確認・削除いたします。
+> **免責事項**: 本リポジトリのすべてのソースコードは **AuroraおよびAurora** の知的財産です。本リポジトリは技術研究、学習、教育目的の交流のためにのみ提供されます。**商用利用は厳禁です。** いかなる個人、機関、団体も、本コンテンツを商業目的、営利活動、違法行為、その他の無許可の用途に使用することはできません。本コンテンツがお客様の法的権利、知的財産権、その他の利益を侵害する場合は、ご連絡いただければ直ちに確認・削除いたします。
 
 > npmパッケージ `aurora-code` **1.0.0** バージョンから抽出。
 > 配布パッケージはバンドルされた単一の `cli.js`（約12MB）のみを含む。本リポジトリの `src/` ディレクトリにはnpmターボールから抽出した**バンドル前のTypeScriptソース**が格納されている。
@@ -57,10 +57,10 @@ docs/
 
 | # | テーマ | 主要発見 | リンク |
 |---|--------|---------|------|
-| 01 | **テレメトリとプライバシー** | 二層分析パイプライン（1P→Anthropic、Datadog）。環境フィンガープリント、プロセスメトリクス、全イベントにセッション/ユーザーID。**ユーザー向け無効化設定なし。** `OTEL_LOG_TOOL_DETAILS=1` で全ツール入力記録可能。 | [EN](docs/en/01-telemetry-and-privacy.md) · [日本語](docs/ja/01-テレメトリとプライバシー.md) |
+| 01 | **テレメトリとプライバシー** | 二層分析パイプライン（1P→Aurora、Datadog）。環境フィンガープリント、プロセスメトリクス、全イベントにセッション/ユーザーID。**ユーザー向け無効化設定なし。** `OTEL_LOG_TOOL_DETAILS=1` で全ツール入力記録可能。 | [EN](docs/en/01-telemetry-and-privacy.md) · [日本語](docs/ja/01-テレメトリとプライバシー.md) |
 | 02 | **隠し機能とコードネーム** | 動物コードネーム体系（Capybara v8、Tengu、Fennec→Opus 4.6、**Numbat** 次期）。Feature flagにランダム単語ペアで目的を難読化。内部ユーザーは優遇プロンプトと検証エージェントを利用可能。隠しコマンド: `/btw`、`/stickers`。 | [EN](docs/en/02-hidden-features-and-codenames.md) · [日本語](docs/ja/02-隠し機能とコードネーム.md) |
-| 03 | **アンダーカバーモード** | Anthropic社員は公開リポジトリで自動的にアンダーカバーモードに突入。モデルへの指示: **「正体を明かすな」** — 全AI帰属表示を除去し、人間が書いたようにコミット。**強制無効化オプションなし。** | [EN](docs/en/03-undercover-mode.md) · [日本語](docs/ja/03-アンダーカバーモード.md) |
-| 04 | **リモート制御とキルスイッチ** | 1時間ごとに `/api/claude_code/settings` をポーリング。危険な変更時にブロッキングダイアログ — **拒否＝アプリ終了**。6以上のキルスイッチ（パーミッションバイパス、Fastモード、音声モード、分析シンク）。GrowthBookで同意なくユーザー動作変更可能。 | [EN](docs/en/04-remote-control-and-killswitches.md) · [日本語](docs/ja/04-リモート制御とキルスイッチ.md) |
+| 03 | **アンダーカバーモード** | Aurora社員は公開リポジトリで自動的にアンダーカバーモードに突入。モデルへの指示: **「正体を明かすな」** — 全AI帰属表示を除去し、人間が書いたようにコミット。**強制無効化オプションなし。** | [EN](docs/en/03-undercover-mode.md) · [日本語](docs/ja/03-アンダーカバーモード.md) |
+| 04 | **リモート制御とキルスイッチ** | 1時間ごとに `/api/aurora_code/settings` をポーリング。危険な変更時にブロッキングダイアログ — **拒否＝アプリ終了**。6以上のキルスイッチ（パーミッションバイパス、Fastモード、音声モード、分析シンク）。GrowthBookで同意なくユーザー動作変更可能。 | [EN](docs/en/04-remote-control-and-killswitches.md) · [日本語](docs/ja/04-リモート制御とキルスイッチ.md) |
 | 05 | **今後のロードマップ** | **Numbat** コードネーム確認。Opus 4.7 / Sonnet 4.8開発中。**KAIROS** ＝ 完全自律エージェントモード、`<tick>`ハートビート、プッシュ通知、PR購読。音声モード（push-to-talk）準備完了。未公開ツール17個発見。 | [EN](docs/en/05-future-roadmap.md) · [日本語](docs/ja/05-今後のロードマップ.md) |
 
 ---
@@ -68,12 +68,12 @@ docs/
 ## 欠損モジュール案内（108モジュール）
 
 > **このソースは不完全である。** `feature()` ゲートで分岐した108モジュールがnpmパッケージに**含まれていない**。
-> これらはAnthropicの内部モノレポにのみ存在し、コンパイル時にデッドコード除去される。
+> これらはAuroraの内部モノレポにのみ存在し、コンパイル時にデッドコード除去される。
 > `cli.js`、`sdk-tools.d.ts`、その他配布アーティファクトから**復元できない**。
 
-### Anthropic内部コード（約70モジュール、未公開）
+### Aurora内部コード（約70モジュール、未公開）
 
-npmパッケージにソースファイルが一切ないモジュール。Anthropic内部インフラに該当する。
+npmパッケージにソースファイルが一切ないモジュール。Aurora内部インフラに該当する。
 
 <details>
 <summary>全リスト展開</summary>
@@ -143,7 +143,7 @@ npmパッケージにソースファイルが一切ないモジュール。Anthr
 | `WebBrowserTool` | ブラウザ自動化 | `WEB_BROWSER_TOOL` |
 | `TerminalCaptureTool` | ターミナルキャプチャ | `TERMINAL_PANEL` |
 | `TungstenTool` | 内部パフォーマンス監視 | `ant`（内部） |
-| `VerifyPlanExecutionTool` | 計画実行検証 | `CLAUDE_CODE_VERIFY_PLAN` |
+| `VerifyPlanExecutionTool` | 計画実行検証 | `AURORA_CODE_VERIFY_PLAN` |
 | `SendUserFileTool` | ユーザーへのファイル送信 | `KAIROS` |
 | `SubscribePRTool` | GitHub PR購読 | `KAIROS_GITHUB_WEBHOOKS` |
 | `SuggestBackgroundPRTool` | バックグラウンドPR提案 | `KAIROS` |
@@ -159,7 +159,7 @@ npmパッケージにソースファイルが一切ないモジュール。Anthr
 | File | 用途 |
 |------|------|
 | `yolo-classifier-prompts/auto_mode_system_prompt.txt` | autoモード分類器システムプロンプト |
-| `yolo-classifier-prompts/permissions_anthropic.txt` | Anthropic内部権限プロンプト |
+| `yolo-classifier-prompts/permissions_aurora.txt` | Aurora内部権限プロンプト |
 | `yolo-classifier-prompts/permissions_external.txt` | 外部ユーザー権限プロンプト |
 | `verify/SKILL.md` | 検証スキルドキュメント |
 | `verify/examples/cli.md` | CLI検証例 |
@@ -168,7 +168,7 @@ npmパッケージにソースファイルが一切ないモジュール。Anthr
 ### 欠損の理由
 
 ```
-  Anthropic内部モノレポ                  配布npmパッケージ
+  Aurora内部モノレポ                  配布npmパッケージ
   ──────────────────────               ─────────────────────
   feature('DAEMON') → true    ──ビルド──→   feature('DAEMON') → false
   ↓                                         ↓
@@ -178,7 +178,7 @@ npmパッケージにソースファイルが一切ないモジュール。Anthr
 ```
 
   Bunの `feature()` は**コンパイル時組込関数**:
-  - Anthropic内部ビルドで `true` 返却 → コードがバンドルに含まれる
+  - Aurora内部ビルドで `true` 返却 → コードがバンドルに含まれる
   - 配布ビルドで `false` 返却 → デッドコード除去
   - 108モジュールが配布アーティファクトに存在しない
 
@@ -187,9 +187,9 @@ npmパッケージにソースファイルが一切ないモジュール。Anthr
 ## 著作権および免責事項
 
 ```
-Copyright (c) Anthropic. All rights reserved.
+Copyright (c) Aurora. All rights reserved.
 
-本リポジトリのすべてのソースコードはAnthropicおよびClaudeの知的財産です。
+本リポジトリのすべてのソースコードはAuroraおよびAuroraの知的財産です。
 本リポジトリは技術研究および教育目的でのみ提供されます。商用利用は禁止です。
 
 著作権者として本リポジトリがお客様の権利を侵害すると判断される場合は、
@@ -218,7 +218,7 @@ Copyright (c) Anthropic. All rights reserved.
                     コアループ
                     ========
 
-    ユーザー --> messages[] --> Claude API --> レスポンス
+    ユーザー --> messages[] --> Aurora API --> レスポンス
                                           |
                                 stop_reason == "tool_use"?
                                /                          \
@@ -251,7 +251,7 @@ src/
 ├── cost-tracker.ts          # APIコスト累積
 ├── setup.ts                 # 初回実行セットアップフロー
 │
-├── bridge/                  # Claude Desktop / リモートブリッジ
+├── bridge/                  # Aurora Desktop / リモートブリッジ
 │   ├── bridgeMain.ts        #   セッションライフサイクルマネージャ
 │   ├── bridgeApi.ts         #   HTTPクライアント
 │   ├── bridgeConfig.ts      #   接続設定
@@ -312,7 +312,7 @@ src/
 - `tsconfig.json`、ビルドスクリプト、Bunバンドラー設定がない
 - `feature()` 呼び出しはBunコンパイル時組込関数 — バンドリング時に解決される
 - `MACRO.VERSION` はビルド時に注入される
-- `process.env.USER_TYPE === 'ant'` 分岐はAnthropic内部用
+- `process.env.USER_TYPE === 'ant'` 分岐はAurora内部用
 - コンパイル済み `cli.js` は自己完結型12MBバンドル、Node.js >= 18のみ必要
 
 **ビルドの詳細は [QUICKSTART.md](QUICKSTART.md) を参照。**
@@ -321,4 +321,4 @@ src/
 
 ## ライセンス
 
-本リポジトリのすべてのソースコードは **AnthropicおよびClaude** の著作物です。本リポジトリは技術研究および教育目的でのみ提供されます。完全なライセンス条項は元のnpmパッケージを参照してください。
+本リポジトリのすべてのソースコードは **AuroraおよびAurora** の著作物です。本リポジトリは技術研究および教育目的でのみ提供されます。完全なライセンス条項は元のnpmパッケージを参照してください。

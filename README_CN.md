@@ -1,6 +1,6 @@
 # Aurora Code v1.0.0 — 源码分析
 
-> **免责声明**: 本仓库中所有源码版权归 **Anthropic 和 Claude** 所有。本仓库仅用于技术研究和科研爱好者交流学习参考，**严禁任何个人、机构及组织将其用于商业用途、盈利性活动、非法用途及其他未经授权的场景。** 若内容涉及侵犯您的合法权益、知识产权或存在其他侵权问题，请及时联系我们，我们将第一时间核实并予以删除处理。
+> **免责声明**: 本仓库中所有源码版权归 **Aurora 和 Aurora** 所有。本仓库仅用于技术研究和科研爱好者交流学习参考，**严禁任何个人、机构及组织将其用于商业用途、盈利性活动、非法用途及其他未经授权的场景。** 若内容涉及侵犯您的合法权益、知识产权或存在其他侵权问题，请及时联系我们，我们将第一时间核实并予以删除处理。
 
 > 从 npm 包 `aurora-code` **1.0.0** 版本中提取。
 > 发布的包只有一个打包后的 `cli.js`（~12MB）。本仓库的 `src/` 目录包含从 npm 包中解包的 **TypeScript 源码**。
@@ -43,10 +43,10 @@ docs/
 
 | # | 主题 | 核心发现 | 链接 |
 |---|------|---------|------|
-| 01 | **遥测与隐私** | 双层分析管道（1P→Anthropic, Datadog）。环境指纹、进程指标、每个事件携带会话/用户 ID。**没有面向用户的退出开关**。`OTEL_LOG_TOOL_DETAILS=1` 可记录完整工具输入。 | [EN](docs/en/01-telemetry-and-privacy.md) · [中文](docs/zh/01-遥测与隐私分析.md) |
+| 01 | **遥测与隐私** | 双层分析管道（1P→Aurora, Datadog）。环境指纹、进程指标、每个事件携带会话/用户 ID。**没有面向用户的退出开关**。`OTEL_LOG_TOOL_DETAILS=1` 可记录完整工具输入。 | [EN](docs/en/01-telemetry-and-privacy.md) · [中文](docs/zh/01-遥测与隐私分析.md) |
 | 02 | **隐藏功能与代号** | 动物代号体系（Capybara v8, Tengu, Fennec→Opus 4.6, **Numbat** 下一代）。Feature flag 用随机词对掩盖用途。内部用户获得更好的 prompt 和验证代理。隐藏命令：`/btw`、`/stickers`。 | [EN](docs/en/02-hidden-features-and-codenames.md) · [中文](docs/zh/02-隐藏功能与模型代号.md) |
-| 03 | **卧底模式** | Anthropic 员工在公开仓库自动进入卧底模式。模型指令："**不要暴露你的掩护身份**" — 剥离所有 AI 归属，commit 看起来像人类写的。**没有强制关闭选项。** | [EN](docs/en/03-undercover-mode.md) · [中文](docs/zh/03-卧底模式分析.md) |
-| 04 | **远程控制与 Killswitch** | 每小时轮询 `/api/claude_code/settings`。危险变更弹出阻塞对话框 — **拒绝 = 程序退出**。6+ 紧急开关（绕过权限、快速模式、语音模式、分析 sink）。GrowthBook 可无同意改变任何用户行为。 | [EN](docs/en/04-remote-control-and-killswitches.md) · [中文](docs/zh/04-远程控制与紧急开关.md) |
+| 03 | **卧底模式** | Aurora 员工在公开仓库自动进入卧底模式。模型指令："**不要暴露你的掩护身份**" — 剥离所有 AI 归属，commit 看起来像人类写的。**没有强制关闭选项。** | [EN](docs/en/03-undercover-mode.md) · [中文](docs/zh/03-卧底模式分析.md) |
+| 04 | **远程控制与 Killswitch** | 每小时轮询 `/api/aurora_code/settings`。危险变更弹出阻塞对话框 — **拒绝 = 程序退出**。6+ 紧急开关（绕过权限、快速模式、语音模式、分析 sink）。GrowthBook 可无同意改变任何用户行为。 | [EN](docs/en/04-remote-control-and-killswitches.md) · [中文](docs/zh/04-远程控制与紧急开关.md) |
 | 05 | **未来路线图** | **Numbat** 代号确认。Opus 4.7 / Sonnet 4.8 开发中。**KAIROS** = 完全自主代理模式，心跳 `<tick>`、推送通知、PR 订阅。语音模式（push-to-talk）已就绪。发现 17 个未上线工具。 | [EN](docs/en/05-future-roadmap.md) · [中文](docs/zh/05-未来路线图.md) |
 
 ---
@@ -54,12 +54,12 @@ docs/
 ## 缺失模块说明（108 个模块）
 
 > **源码不完整。** 108 个被 `feature()` 门控的模块**未包含**在 npm 包中。
-> 它们仅存在于 Anthropic 的内部 monorepo 中，在编译时被死代码消除。
+> 它们仅存在于 Aurora 的内部 monorepo 中，在编译时被死代码消除。
 > **无法**从 `cli.js`、`sdk-tools.d.ts` 或任何已发布的制品中恢复。
 
-### Anthropic 内部代码（~70 个模块，从未发布）
+### Aurora 内部代码（~70 个模块，从未发布）
 
-这些模块在 npm 包中没有任何源文件。它们是 Anthropic 内部基础设施。
+这些模块在 npm 包中没有任何源文件。它们是 Aurora 内部基础设施。
 
 <details>
 <summary>点击展开完整列表</summary>
@@ -129,7 +129,7 @@ docs/
 | `WebBrowserTool` | 浏览器自动化 | `WEB_BROWSER_TOOL` |
 | `TerminalCaptureTool` | 终端捕获 | `TERMINAL_PANEL` |
 | `TungstenTool` | 内部性能监控 | `ant` (内部) |
-| `VerifyPlanExecutionTool` | 计划验证 | `CLAUDE_CODE_VERIFY_PLAN` |
+| `VerifyPlanExecutionTool` | 计划验证 | `AURORA_CODE_VERIFY_PLAN` |
 | `SendUserFileTool` | 向用户发送文件 | `KAIROS` |
 | `SubscribePRTool` | GitHub PR 订阅 | `KAIROS_GITHUB_WEBHOOKS` |
 | `SuggestBackgroundPRTool` | 建议后台 PR | `KAIROS` |
@@ -145,7 +145,7 @@ docs/
 | File | Purpose |
 |------|---------|
 | `yolo-classifier-prompts/auto_mode_system_prompt.txt` | 自动模式分类器系统提示 |
-| `yolo-classifier-prompts/permissions_anthropic.txt` | Anthropic 内部权限提示 |
+| `yolo-classifier-prompts/permissions_aurora.txt` | Aurora 内部权限提示 |
 | `yolo-classifier-prompts/permissions_external.txt` | 外部用户权限提示 |
 | `verify/SKILL.md` | 验证技能文档 |
 | `verify/examples/cli.md` | CLI 验证示例 |
@@ -154,7 +154,7 @@ docs/
 ### 为什么缺失
 
 ```
-  Anthropic 内部 Monorepo              发布的 npm 包
+  Aurora 内部 Monorepo              发布的 npm 包
   ──────────────────────               ─────────────────────
   feature('DAEMON') → true    ──构建──→   feature('DAEMON') → false
   ↓                                         ↓
@@ -164,7 +164,7 @@ docs/
 ```
 
   Bun 的 `feature()` 是**编译时内建函数**：
-  - 在 Anthropic 内部构建中返回 `true` → 代码保留在 bundle 中
+  - 在 Aurora 内部构建中返回 `true` → 代码保留在 bundle 中
   - 在发布构建中返回 `false` → 代码被死代码消除
   - 108 个模块在已发布的制品中根本不存在
 
@@ -173,9 +173,9 @@ docs/
 ## 版权与免责声明
 
 ```
-Copyright (c) Anthropic. All rights reserved.
+Copyright (c) Aurora. All rights reserved.
 
-本仓库中所有源码均为 Anthropic 和 Claude 的知识产权。
+本仓库中所有源码均为 Aurora 和 Aurora 的知识产权。
 本仓库仅用于技术研究和教育目的。严禁商业使用。
 
 如果您是版权所有者并认为本仓库侵犯了您的权利，
@@ -204,7 +204,7 @@ Copyright (c) Anthropic. All rights reserved.
                     核心循环
                     ========
 
-    用户 --> messages[] --> Claude API --> 响应
+    用户 --> messages[] --> Aurora API --> 响应
                                           |
                                 stop_reason == "tool_use"?
                                /                          \
@@ -237,7 +237,7 @@ src/
 ├── cost-tracker.ts          # API 成本累积
 ├── setup.ts                 # 首次运行设置流程
 │
-├── bridge/                  # Claude Desktop / 远程桥接
+├── bridge/                  # Aurora Desktop / 远程桥接
 │   ├── bridgeMain.ts        #   会话生命周期管理器
 │   ├── bridgeApi.ts         #   HTTP 客户端
 │   ├── bridgeConfig.ts      #   连接配置
@@ -298,7 +298,7 @@ src/
 - 缺少 `tsconfig.json`、构建脚本和 Bun bundler 配置
 - `feature()` 调用是 Bun 编译时内建函数 — 在打包时解析
 - `MACRO.VERSION` 在构建时注入
-- `process.env.USER_TYPE === 'ant'` 部分是 Anthropic 内部的
+- `process.env.USER_TYPE === 'ant'` 部分是 Aurora 内部的
 - 编译后的 `cli.js` 是一个自包含的 12MB bundle，只需 Node.js >= 18
 
 **构建说明详见 [QUICKSTART.md](QUICKSTART.md)。**
@@ -307,4 +307,4 @@ src/
 
 ## 许可证
 
-本仓库中所有源码版权归 **Anthropic 和 Claude** 所有。本仓库仅用于技术研究和教育目的。完整许可条款请参阅原始 npm 包。
+本仓库中所有源码版权归 **Aurora 和 Aurora** 所有。本仓库仅用于技术研究和教育目的。完整许可条款请参阅原始 npm 包。

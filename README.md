@@ -1,6 +1,6 @@
 # Aurora Code v1.0.0 — Source Code Analysis
 
-> **Disclaimer**: All source code in this repository is the intellectual property of **Anthropic and Claude**. This repository is provided strictly for technical research, study, and educational exchange among enthusiasts. **Commercial use is strictly prohibited.** No individual, organization, or entity may use this content for commercial purposes, profit-making activities, illegal activities, or any other unauthorized scenarios. If any content infringes upon your legal rights, intellectual property, or other interests, please contact us and we will verify and remove it immediately.
+> **Disclaimer**: All source code in this repository is the intellectual property of **Aurora**. This repository is provided strictly for technical research, study, and educational exchange among enthusiasts. **Commercial use is strictly prohibited.** No individual, organization, or entity may use this content for commercial purposes, profit-making activities, illegal activities, or any other unauthorized scenarios. If any content infringes upon your legal rights, intellectual property, or other interests, please contact us and we will verify and remove it immediately.
 
 > Extracted from npm package `aurora-code` version **1.0.0**.
 > The published package ships a single bundled `cli.js` (~12MB). The `src/` directory in this repo contains the **unbundled TypeScript source** extracted from the npm tarball.
@@ -59,10 +59,10 @@ docs/
 
 | # | Topic | Key Findings |
 |---|-------|-------------|
-| 01 | **Telemetry & Privacy** | Two analytics sinks (1P → Anthropic, Datadog). Environment fingerprint, process metrics, repo hash on every event. **No UI-exposed opt-out** for 1st-party logging. `OTEL_LOG_TOOL_DETAILS=1` enables full tool input capture. |
+| 01 | **Telemetry & Privacy** | Two analytics sinks (1P → Aurora, Datadog). Environment fingerprint, process metrics, repo hash on every event. **No UI-exposed opt-out** for 1st-party logging. `OTEL_LOG_TOOL_DETAILS=1` enables full tool input capture. |
 | 02 | **Hidden Features & Codenames** | Animal codenames (Capybara v8, Tengu, Fennec→Opus 4.6, **Numbat** next). Feature flags use random word pairs (`tengu_frond_boric`) to obscure purpose. Internal users get better prompts, verification agents, and effort anchors. Hidden commands: `/btw`, `/stickers`. |
-| 03 | **Undercover Mode** | Anthropic employees auto-enter undercover mode in public repos. Model instructed: *"Do not blow your cover"* — strip all AI attribution, write commits "as a human developer would." **No force-OFF exists.** Raises transparency questions for open-source communities. |
-| 04 | **Remote Control** | Hourly polling of `/api/claude_code/settings`. Dangerous changes show blocking dialog — **reject = app exits**. 6+ killswitches (bypass permissions, fast mode, voice mode, analytics sink). GrowthBook flags can change any user's behavior without consent. |
+| 03 | **Undercover Mode** | Aurora employees auto-enter undercover mode in public repos. Model instructed: *"Do not blow your cover"* — strip all AI attribution, write commits "as a human developer would." **No force-OFF exists.** Raises transparency questions for open-source communities. |
+| 04 | **Remote Control** | Hourly polling of `/api/aurora_code/settings`. Dangerous changes show blocking dialog — **reject = app exits**. 6+ killswitches (bypass permissions, fast mode, voice mode, analytics sink). GrowthBook flags can change any user's behavior without consent. |
 | 05 | **Future Roadmap** | **Numbat** codename confirmed. Opus 4.7 / Sonnet 4.8 in development. **KAIROS** = fully autonomous agent mode with `<tick>` heartbeats, push notifications, PR subscriptions. Voice mode (push-to-talk) ready but gated. 17 unreleased tools found. |
 
 ---
@@ -70,12 +70,12 @@ docs/
 ## Missing Modules Notice (108 modules)
 
 > **This source is incomplete.** 108 modules referenced by `feature()`-gated branches are **not included** in the npm package.
-> They exist only in Anthropic's internal monorepo and were dead-code-eliminated at compile time.
+> They exist only in Aurora's internal monorepo and were dead-code-eliminated at compile time.
 > They **cannot** be recovered from `cli.js`, `sdk-tools.d.ts`, or any published artifact.
 
-### Anthropic Internal Code (~70 modules, never published)
+### Aurora Internal Code (~70 modules, never published)
 
-These modules have no source files anywhere in the npm package. They are internal Anthropic infrastructure.
+These modules have no source files anywhere in the npm package. They are internal Aurora infrastructure.
 
 <details>
 <summary>Click to expand full list</summary>
@@ -146,7 +146,7 @@ These tools have type signatures in `sdk-tools.d.ts` but their implementations w
 | `WebBrowserTool` | Browser automation | `WEB_BROWSER_TOOL` |
 | `TerminalCaptureTool` | Terminal capture | `TERMINAL_PANEL` |
 | `TungstenTool` | Internal perf monitoring | `ant` (internal) |
-| `VerifyPlanExecutionTool` | Plan verification | `CLAUDE_CODE_VERIFY_PLAN` |
+| `VerifyPlanExecutionTool` | Plan verification | `AURORA_CODE_VERIFY_PLAN` |
 | `SendUserFileTool` | Send files to users | `KAIROS` |
 | `SubscribePRTool` | GitHub PR subscription | `KAIROS_GITHUB_WEBHOOKS` |
 | `SuggestBackgroundPRTool` | Suggest background PRs | `KAIROS` |
@@ -167,7 +167,7 @@ These are internal prompt templates and documentation, never published.
 | File | Purpose |
 |------|---------|
 | `yolo-classifier-prompts/auto_mode_system_prompt.txt` | Auto-mode system prompt for classifier |
-| `yolo-classifier-prompts/permissions_anthropic.txt` | Anthropic-internal permission prompt |
+| `yolo-classifier-prompts/permissions_aurora.txt` | Aurora-internal permission prompt |
 | `yolo-classifier-prompts/permissions_external.txt` | External user permission prompt |
 | `verify/SKILL.md` | Verification skill documentation |
 | `verify/examples/cli.md` | CLI verification examples |
@@ -178,7 +178,7 @@ These are internal prompt templates and documentation, never published.
 ### Why They're Missing
 
 ```
-  Anthropic Internal Monorepo              Published npm Package
+  Aurora Internal Monorepo              Published npm Package
   ──────────────────────────               ─────────────────────
   feature('DAEMON') → true    ──build──→   feature('DAEMON') → false
   ↓                                         ↓
@@ -188,7 +188,7 @@ These are internal prompt templates and documentation, never published.
   ```
 
   Bun's `feature()` is a **compile-time intrinsic**:
-  - Returns `true` in Anthropic's internal build → code is kept in the bundle
+  - Returns `true` in Aurora's internal build → code is kept in the bundle
   - Returns `false` in the published build → code is dead-code-eliminated
   - The 108 modules simply do not exist anywhere in the published artifact
 
@@ -197,9 +197,9 @@ These are internal prompt templates and documentation, never published.
 ## Copyright & Disclaimer
 
 ```
-Copyright (c) Anthropic. All rights reserved.
+Copyright (c) Aurora. All rights reserved.
 
-All source code in this repository is the intellectual property of Anthropic and Claude.
+All source code in this repository is the intellectual property of Aurora.
 This repository is provided strictly for technical research and educational purposes.
 Commercial use is strictly prohibited.
 
@@ -229,7 +229,7 @@ please contact the repository owner for immediate removal.
                     THE CORE LOOP
                     =============
 
-    User --> messages[] --> Claude API --> response
+    User --> messages[] --> Aurora API --> response
                                           |
                                 stop_reason == "tool_use"?
                                /                          \
@@ -262,7 +262,7 @@ src/
 ├── cost-tracker.ts          # API cost accumulation
 ├── setup.ts                 # First-run setup flow
 │
-├── bridge/                  # Claude Desktop / remote bridge
+├── bridge/                  # Aurora Desktop / remote bridge
 │   ├── bridgeMain.ts        #   Session lifecycle manager
 │   ├── bridgeApi.ts         #   HTTP client
 │   ├── bridgeConfig.ts      #   Connection config
@@ -311,8 +311,8 @@ src/
 │   └── toolPermission/      #   Tool permission handlers
 │
 ├── services/                # Business logic layer
-│   ├── api/                 #   Claude API client
-│   │   ├── claude.ts        #     Streaming API calls
+│   ├── api/                 #   Aurora API client
+│   │   ├── aurora.ts        #     Streaming API calls
 │   │   ├── errors.ts        #     Error categorization
 │   │   └── withRetry.ts     #     Retry logic
 │   ├── analytics/           #   Telemetry + GrowthBook
@@ -408,7 +408,7 @@ src/
 ┌──────────────────┐ ┌─────────────────┐ ┌──────────────────┐
 │   TOOL SYSTEM    │ │  SERVICE LAYER  │ │   STATE LAYER    │
 │                  │ │                 │ │                  │
-│ Tool Interface   │ │ api/claude.ts   │ │ AppState Store   │
+│ Tool Interface   │ │ api/aurora.ts   │ │ AppState Store   │
 │  ├─ call()       │ │  API client     │ │  ├─ permissions  │
 │  ├─ validate()   │ │ compact/        │ │  ├─ fileHistory  │
 │  ├─ checkPerms() │ │  auto-compact   │ │  ├─ agents       │
@@ -455,7 +455,7 @@ src/
  processUserInput()                ← parse /commands, build UserMessage
      │
      ▼
- fetchSystemPromptParts()          ← tools → prompt sections, CLAUDE.md memory
+ fetchSystemPromptParts()          ← tools → prompt sections, AURORA.md memory
      │
      ▼
  recordTranscript()                ← persist user message to disk (JSONL)
@@ -464,7 +464,7 @@ src/
  ┌─→ normalizeMessagesForAPI()     ← strip UI-only fields, compact if needed
  │   │
  │   ▼
- │   Claude API (streaming)        ← POST /v1/messages with tools + system prompt
+ │   Aurora API (streaming)        ← POST /v1/messages with tools + system prompt
  │   │
  │   ▼
  │   stream events                 ← message_start → content_block_delta → message_stop
@@ -654,7 +654,7 @@ src/
     ═════════════════════
 
     ┌─────────────────────────────────────────────────────┐
-    │  System Prompt (tools, permissions, CLAUDE.md)      │
+    │  System Prompt (tools, permissions, AURORA.md)      │
     │  ══════════════════════════════════════════════      │
     │                                                     │
     │  Conversation History                               │
@@ -682,7 +682,7 @@ src/
     messages[] ──> getMessagesAfterCompactBoundary()
                         │
                         ▼
-                  older messages ──> Claude API (summarize) ──> compact summary
+                  older messages ──> Aurora API (summarize) ──> compact summary
                         │
                         ▼
                   [summary] + [compact_boundary] + [recent messages]
@@ -725,10 +725,10 @@ src/
 
 ---
 
-## Bridge Layer (Claude Desktop / Remote)
+## Bridge Layer (Aurora Desktop / Remote)
 
 ```
-    Claude Desktop / Web / Cowork          Aurora Code CLI
+    Aurora Desktop / Web / Cowork          Aurora Code CLI
     ══════════════════════════            ═════════════════
 
     ┌───────────────────┐                 ┌──────────────────┐
@@ -754,7 +754,7 @@ src/
     SESSION STORAGE
     ══════════════
 
-    ~/.claude/projects/<hash>/sessions/
+    ~/.aurora/projects/<hash>/sessions/
     └── <session-id>.jsonl           ← append-only log
         ├── {"type":"user",...}
         ├── {"type":"assistant",...}
@@ -810,7 +810,7 @@ src/
     └─ UPGRADE_NOTICE        → upgrade notifications
 
     RUNTIME GATES:
-    ├─ process.env.USER_TYPE === 'ant'  → Anthropic-internal features
+    ├─ process.env.USER_TYPE === 'ant'  → Aurora-internal features
     └─ GrowthBook feature flags         → A/B experiments at runtime
 ```
 
@@ -854,7 +854,7 @@ This source code demonstrates 12 layered mechanisms that a production AI agent h
 
 ```
     s01  THE LOOP             "One loop & Bash is all you need"
-         query.ts: the while-true loop that calls Claude API,
+         query.ts: the while-true loop that calls Aurora API,
          checks stop_reason, executes tools, appends results.
 
     s02  TOOL DISPATCH        "Adding a tool = adding one handler"
@@ -872,7 +872,7 @@ This source code demonstrates 12 layered mechanisms that a production AI agent h
 
     s05  KNOWLEDGE ON DEMAND  "Load knowledge when you need it"
          SkillTool + memdir/: inject via tool_result, not system prompt.
-         CLAUDE.md files loaded lazily per directory.
+         AURORA.md files loaded lazily per directory.
 
     s06  CONTEXT COMPRESSION  "Context fills up; make room"
          services/compact/: three-layer strategy:
@@ -930,7 +930,7 @@ This source is **not directly compilable** from this repo alone:
 - Missing `tsconfig.json`, build scripts, and Bun bundler config
 - `feature()` calls are Bun compile-time intrinsics — resolved during bundling
 - `MACRO.VERSION` is injected at build time
-- `process.env.USER_TYPE === 'ant'` sections are Anthropic-internal
+- `process.env.USER_TYPE === 'ant'` sections are Aurora-internal
 - The compiled `cli.js` is a self-contained 12MB bundle requiring only Node.js >= 18
 - Source maps (`cli.js.map`, 60MB) map back to these source files for debugging
 
@@ -940,4 +940,4 @@ This source is **not directly compilable** from this repo alone:
 
 ## License
 
-All source code in this repository is copyright **Anthropic and Claude**. This repository is for technical research and education only. See the original npm package for full license terms.
+All source code in this repository is copyright **Aurora**. This repository is for technical research and education only. See the original npm package for full license terms.
