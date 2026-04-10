@@ -1,8 +1,8 @@
-# Claude Code v2.1.88 — Source Code Analysis
+# Aurora Code v1.0.0 — Source Code Analysis
 
 > **Disclaimer**: All source code in this repository is the intellectual property of **Anthropic and Claude**. This repository is provided strictly for technical research, study, and educational exchange among enthusiasts. **Commercial use is strictly prohibited.** No individual, organization, or entity may use this content for commercial purposes, profit-making activities, illegal activities, or any other unauthorized scenarios. If any content infringes upon your legal rights, intellectual property, or other interests, please contact us and we will verify and remove it immediately.
 
-> Extracted from npm package `@anthropic-ai/claude-code` version **2.1.88**.
+> Extracted from npm package `aurora-code` version **1.0.0**.
 > The published package ships a single bundled `cli.js` (~12MB). The `src/` directory in this repo contains the **unbundled TypeScript source** extracted from the npm tarball.
 
 **Language**: **English** | [中文](README_CN.md) | [한국어](README_KR.md) | [日本語](README_JA.md)
@@ -15,14 +15,14 @@
 - [Missing Modules Notice](#missing-modules-notice-108-modules) — 108 feature-gated modules not in the npm package
 - [Architecture Overview](#architecture-overview) — Entry → Query Engine → Tools/Services/State
 - [Tool System & Permissions](#tool-system-architecture) — 40+ tools, permission flow, sub-agents
-- [The 12 Progressive Harness Mechanisms](#the-12-progressive-harness-mechanisms) — How Claude Code layers production features on the agent loop
+- [The 12 Progressive Harness Mechanisms](#the-12-progressive-harness-mechanisms) — How Aurora Code layers production features on the agent loop
 - [Build Notes](#build-notes) — Why this source isn't directly compilable
 
 ---
 
 ## Deep Analysis Reports (`docs/`)
 
-Source code analysis reports derived from decompiled v2.1.88. Quadrilingual (EN/JA/KO/ZH).
+Source code analysis reports derived from decompiled v1.0.0. Quadrilingual (EN/JA/KO/ZH).
 
 ```
 docs/
@@ -240,7 +240,7 @@ please contact the repository owner for immediate removal.
                         loop back -----------------> messages[]
 
 
-    That is the minimal agent loop. Claude Code wraps this loop
+    That is the minimal agent loop. Aurora Code wraps this loop
     with a production-grade harness: permissions, streaming,
     concurrency, compaction, sub-agents, persistence, and MCP.
 ```
@@ -626,7 +626,7 @@ src/
     ├─ default    → in-process, shared conversation
     ├─ fork       → child process, fresh messages[], shared file cache
     ├─ worktree   → isolated git worktree + fork
-    └─ remote     → bridge to Claude Code Remote / container
+    └─ remote     → bridge to Aurora Code Remote / container
 
     COMMUNICATION:
     ├─ SendMessageTool     → agent-to-agent messages
@@ -717,7 +717,7 @@ src/
     │    └── Tool Registration                                │
     │          ├── mcp__<server>__<tool> naming convention     │
     │          ├── Dynamic schema from MCP server              │
-    │          ├── Permission passthrough to Claude Code       │
+    │          ├── Permission passthrough to Aurora Code       │
     │          └── Resource listing (ListMcpResourcesTool)     │
     │                                                         │
     └─────────────────────────────────────────────────────────┘
@@ -728,7 +728,7 @@ src/
 ## Bridge Layer (Claude Desktop / Remote)
 
 ```
-    Claude Desktop / Web / Cowork          Claude Code CLI
+    Claude Desktop / Web / Cowork          Aurora Code CLI
     ══════════════════════════            ═════════════════
 
     ┌───────────────────┐                 ┌──────────────────┐
