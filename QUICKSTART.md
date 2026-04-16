@@ -10,7 +10,7 @@ The npm package already contains a compiled `cli.js`:
 
 ```bash
 cd /path/to/parent/            # where package.json and cli.js live
-node cli.js --version           # → 2.1.88 (Claude Code)
+node cli.js --version           # → 1.0.0 (Aurora Code)
 node cli.js -p "Hello Claude"   # Non-interactive mode
 
 # Or install globally:
@@ -75,7 +75,7 @@ npm --version    # >= 9
 ### Steps
 
 ```bash
-cd claude-code-2.1.88/
+cd claude-code-1.0.0/
 
 # 1. Install build dependency
 npm install --save-dev esbuild
@@ -93,7 +93,7 @@ node dist/cli.js --version
 |-------|--------|
 | **1. Copy** | `src/` → `build-src/` (original untouched) |
 | **2. Transform** | `feature('X')` → `false` (enables dead code elimination) |
-| **2b. Transform** | `MACRO.VERSION` → `'2.1.88'` (compile-time version injection) |
+| **2b. Transform** | `MACRO.VERSION` → `'1.0.0'` (compile-time version injection) |
 | **2c. Transform** | `import from 'bun:bundle'` → stub import |
 | **3. Entry** | Create wrapper that injects MACRO globals |
 | **4. Bundle** | esbuild with iterative stub creation for missing modules |
@@ -138,7 +138,7 @@ curl -fsSL https://bun.sh/install | bash
 # The real build uses Bun's bundler with compile-time feature flags:
 # bun build src/entrypoints/cli.tsx \
 #   --define:feature='(flag) => flag === "SOME_FLAG"' \
-#   --define:MACRO.VERSION='"2.1.88"' \
+#   --define:MACRO.VERSION='"1.0.0"' \
 #   --target=bun \
 #   --outfile=dist/cli.js
 
@@ -149,7 +149,7 @@ curl -fsSL https://bun.sh/install | bash
 ## Project Structure
 
 ```
-claude-code-2.1.88/
+claude-code-1.0.0/
 ├── src/                  # Original TypeScript source (1,884 files, 512K LOC)
 ├── stubs/                # Build stubs for Bun compile-time intrinsics
 │   ├── bun-bundle.ts     #   feature() stub → always returns false
