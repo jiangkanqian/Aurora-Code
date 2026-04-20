@@ -243,7 +243,7 @@ function Try-EnableProxyFromUserInternetSettings() {
 function Get-LatestAssistantTranscriptText() {
   try {
     $projectSlug = $RepoRoot -replace '[:\\]', '-'
-    $projectDir = Join-Path $env:USERPROFILE (".claude\\projects\\" + $projectSlug)
+    $projectDir = Join-Path $env:USERPROFILE (".aurora\\projects\\" + $projectSlug)
     if (-not (Test-Path $projectDir)) { return $null }
     $latest = Get-ChildItem -Path $projectDir -File -Filter *.jsonl -ErrorAction SilentlyContinue |
       Sort-Object LastWriteTime -Descending |
