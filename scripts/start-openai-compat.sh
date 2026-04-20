@@ -25,6 +25,9 @@ fi
 if [[ -z "${OPENAI_API_KEY:-}" && -n "${ANTHROPIC_API_KEY:-}" ]]; then
   export OPENAI_API_KEY="${ANTHROPIC_API_KEY}"
 fi
+if [[ -z "${ANTHROPIC_API_KEY:-}" && -n "${OPENAI_API_KEY:-}" ]]; then
+  export ANTHROPIC_API_KEY="${OPENAI_API_KEY}"
+fi
 
 if [[ ! -f "${CLI_DIST}" ]]; then
   echo "Missing dist/cli.js. Build first: npm run build"

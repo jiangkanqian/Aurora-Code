@@ -7,6 +7,7 @@ import {
   isAnthropicAuthEnabled,
   isClaudeAISubscriber,
 } from '../utils/auth.js'
+import { isEnvTruthy } from '../utils/envUtils.js'
 
 export type VerificationStatus =
   | 'loading'
@@ -23,6 +24,12 @@ export type ApiKeyVerificationResult = {
 
 export function useApiKeyVerification(): ApiKeyVerificationResult {
   const [status, setStatus] = useState<VerificationStatus>(() => {
+    // OpenAI-compatible mode does not use Anthropic key verification.
+    // Treat as valid when a compatible API key is present.
+    if (isEnvTruthy(process.env.CLAUDE_CODE_USE_OPENAI_COMPAT)) {
+      const key = process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY
+      return key ? 'valid' : 'missing'
+    }
     if (!isAnthropicAuthEnabled() || isClaudeAISubscriber()) {
       return 'valid'
     }
@@ -41,6 +48,15 @@ export function useApiKeyVerification(): ApiKeyVerificationResult {
   const [error, setError] = useState<Error | null>(null)
 
   const verify = useCallback(async (): Promise<void> => {
+    if (isEnvTruthy(process.env.CLAUDE_CODE_USE_OPENAI_COMPAT)) {
+      const key = process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY
+      if (!key) {
+        setStatus('missing')
+        return
+      }
+      setStatus('valid')
+      return
+    }
     if (!isAnthropicAuthEnabled() || isClaudeAISubscriber()) {
       setStatus('valid')
       return
