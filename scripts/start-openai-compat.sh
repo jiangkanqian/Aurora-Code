@@ -28,6 +28,40 @@ export npm_config_offline=false
 
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
+patch_jsonc_parser_esm_imports() {
+  local main_js="${REPO_ROOT}/node_modules/jsonc-parser/lib/esm/main.js"
+  if [[ ! -f "${main_js}" ]]; then
+    return 1
+  fi
+
+  # Node.js ESM (especially newer runtimes) requires explicit file extensions.
+  # Some jsonc-parser builds ship extensionless relative imports in lib/esm/main.js.
+  node -e "
+const fs = require('fs');
+const p = process.argv[1];
+let s = fs.readFileSync(p, 'utf8');
+const before = s;
+s = s
+  .replace(/from '\\.\\/impl\\/format'/g, \"from './impl/format.js'\")
+  .replace(/from '\\.\\/impl\\/parser'/g, \"from './impl/parser.js'\")
+  .replace(/from '\\.\\/impl\\/scanner'/g, \"from './impl/scanner.js'\")
+  .replace(/from '\\.\\/impl\\/edit'/g, \"from './impl/edit.js'\");
+if (s !== before) {
+  fs.writeFileSync(p, s, 'utf8');
+  process.exit(0);
+}
+process.exit(2);
+" "${main_js}" >/dev/null 2>&1
+  local code=$?
+
+  if [[ ${code} -eq 0 ]]; then
+    echo "Patched jsonc-parser ESM imports for Node compatibility, retrying startup..."
+    return 0
+  fi
+
+  return 1
+}
+
 install_missing_package() {
   local pkg="$1"
   if [[ -z "${pkg}" ]]; then
@@ -102,6 +136,12 @@ while [[ ${attempt} -le ${max_attempts} ]]; do
 
   pkg="$(printf '%s' "${output}" | sed -n "s/.*Cannot find package '\([^']*\)'.*/\1/p" | head -n 1)"
   if [[ -z "${pkg}" ]]; then
+    if printf '%s' "${output}" | grep -q "jsonc-parser/lib/esm/impl/format"; then
+      patch_jsonc_parser_esm_imports && {
+        attempt=$((attempt + 1))
+        continue
+      }
+    fi
     printf '%s\n' "${output}"
     exit "${code}"
   fi
