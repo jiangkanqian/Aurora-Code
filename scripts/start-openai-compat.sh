@@ -165,6 +165,14 @@ JS
 
 max_attempts=60
 attempt=1
+
+# Interactive mode (no args): run directly so TUI/output is streamed in real time.
+# The retry/auto-install loop below is intended for one-shot invocations (e.g. --print).
+if [[ $# -eq 0 ]]; then
+  echo "Launching interactive mode..."
+  exec node "${CLI_DIST}"
+fi
+
 while [[ ${attempt} -le ${max_attempts} ]]; do
   echo "Startup attempt ${attempt}/${max_attempts}..."
   set +e
