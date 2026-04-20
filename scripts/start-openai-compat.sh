@@ -29,29 +29,63 @@ export npm_config_offline=false
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
 patch_jsonc_parser_esm_imports() {
-  local main_js="${REPO_ROOT}/node_modules/jsonc-parser/lib/esm/main.js"
-  if [[ ! -f "${main_js}" ]]; then
+  local esm_dir="${REPO_ROOT}/node_modules/jsonc-parser/lib/esm"
+  if [[ ! -d "${esm_dir}" ]]; then
     return 1
   fi
 
   # Node.js ESM (especially newer runtimes) requires explicit file extensions.
-  # Some jsonc-parser builds ship extensionless relative imports in lib/esm/main.js.
+  # Some jsonc-parser builds ship extensionless relative imports in lib/esm/*.js.
+  # Patch all JS files in that directory tree.
   node -e "
 const fs = require('fs');
-const p = process.argv[1];
-let s = fs.readFileSync(p, 'utf8');
-const before = s;
-s = s
-  .replace(/from '\\.\\/impl\\/format'/g, \"from './impl/format.js'\")
-  .replace(/from '\\.\\/impl\\/parser'/g, \"from './impl/parser.js'\")
-  .replace(/from '\\.\\/impl\\/scanner'/g, \"from './impl/scanner.js'\")
-  .replace(/from '\\.\\/impl\\/edit'/g, \"from './impl/edit.js'\");
-if (s !== before) {
-  fs.writeFileSync(p, s, 'utf8');
+const path = require('path');
+const root = process.argv[1];
+
+function walk(dir) {
+  const out = [];
+  for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...walk(p));
+    else if (ent.isFile() && p.endsWith('.js')) out.push(p);
+  }
+  return out;
+}
+
+function patchOneFile(filePath) {
+  let src = fs.readFileSync(filePath, 'utf8');
+  const before = src;
+
+  // Patch:
+  //   import ... from './x'
+  //   export ... from '../y'
+  // -> add .js only when target file exists.
+  src = src.replace(
+    /\\b(from\\s+['\"])(\\.{1,2}\\/[^'\"\\n]+)(['\"])/g,
+    (m, p1, spec, p3) => {
+      if (/\\.(mjs|cjs|js|json|node)$/i.test(spec)) return m;
+      const target = path.resolve(path.dirname(filePath), spec + '.js');
+      if (fs.existsSync(target)) return p1 + spec + '.js' + p3;
+      return m;
+    }
+  );
+
+  if (src !== before) {
+    fs.writeFileSync(filePath, src, 'utf8');
+    return 1;
+  }
+  return 0;
+}
+
+let changed = 0;
+for (const f of walk(root)) {
+  changed += patchOneFile(f);
+}
+if (changed > 0) {
   process.exit(0);
 }
 process.exit(2);
-" "${main_js}" >/dev/null 2>&1
+" "${esm_dir}" >/dev/null 2>&1
   local code=$?
 
   if [[ ${code} -eq 0 ]]; then
