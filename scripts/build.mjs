@@ -19,6 +19,7 @@ import {
   rm,
   stat,
 } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { execSync, execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
@@ -38,12 +39,17 @@ function getNpmCommand() {
 }
 
 function getEsbuildEntry() {
-  return join(ROOT, 'node_modules', 'esbuild', 'bin', 'esbuild')
+  const base = join(ROOT, 'node_modules', 'esbuild', 'bin', 'esbuild')
+  if (process.platform === 'win32') {
+    const exe = `${base}.exe`
+    if (existsSync(exe)) return exe
+  }
+  return base
 }
 
 function runEsbuild(args, options = {}) {
   const esbuildEntry = getEsbuildEntry()
-  return execFileSync(process.execPath, [esbuildEntry, ...args], {
+  return execFileSync(esbuildEntry, args, {
     cwd: ROOT,
     ...options,
   })
