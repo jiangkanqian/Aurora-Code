@@ -15,6 +15,16 @@ export interface PreflightCheckResult {
   sslHint?: string;
 }
 async function checkEndpoints(): Promise<PreflightCheckResult> {
+  // OpenAI-compatible mode does not require Anthropic connectivity checks.
+  // Skip this preflight so custom backends can start even when api.anthropic.com
+  // is unreachable in the current network.
+  const compat = (process.env.CLAUDE_CODE_USE_OPENAI_COMPAT || '').toLowerCase()
+  if (compat === '1' || compat === 'true' || compat === 'yes' || compat === 'on') {
+    return {
+      success: true
+    }
+  }
+
   try {
     const oauthConfig = getOauthConfig();
     const tokenUrl = new URL(oauthConfig.TOKEN_URL);

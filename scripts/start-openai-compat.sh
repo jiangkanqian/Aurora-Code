@@ -17,6 +17,15 @@ set -a
 source "${ENV_FILE}"
 set +a
 
+# Force OpenAI-compatible runtime mode for this launcher.
+export CLAUDE_CODE_USE_OPENAI_COMPAT=1
+if [[ -n "${OPENAI_BASE_URL:-}" ]]; then
+  export ANTHROPIC_BASE_URL="${OPENAI_BASE_URL}"
+fi
+if [[ -z "${OPENAI_API_KEY:-}" && -n "${ANTHROPIC_API_KEY:-}" ]]; then
+  export OPENAI_API_KEY="${ANTHROPIC_API_KEY}"
+fi
+
 if [[ ! -f "${CLI_DIST}" ]]; then
   echo "Missing dist/cli.js. Build first: npm run build"
   exit 1
