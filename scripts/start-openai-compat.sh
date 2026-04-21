@@ -34,9 +34,63 @@ if [[ ! -f "${CLI_DIST}" ]]; then
   exit 1
 fi
 
-# Disable broken proxy/offline settings for this process only.
-unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+# Proxy handling:
+# - default: keep current proxy env (many users need it to reach API)
+# - opt-in clear: set OPENAI_COMPAT_CLEAR_PROXY=1/true/yes/on in .env
+should_clear_proxy=false
+case "${OPENAI_COMPAT_CLEAR_PROXY:-0}" in
+  1|true|TRUE|yes|YES|on|ON) should_clear_proxy=true ;;
+esac
+
+if [[ "${should_clear_proxy}" == "true" ]]; then
+  unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+  echo "Cleared proxy env vars for this run (OPENAI_COMPAT_CLEAR_PROXY enabled)."
+fi
+
 export npm_config_offline=false
+
+apply_macos_system_proxy_if_needed() {
+  if [[ "${should_clear_proxy}" == "true" ]]; then
+    return 1
+  fi
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return 1
+  fi
+  if [[ -n "${HTTP_PROXY:-}${HTTPS_PROXY:-}${http_proxy:-}${https_proxy:-}" ]]; then
+    return 1
+  fi
+  if ! command -v scutil >/dev/null 2>&1; then
+    return 1
+  fi
+
+  local proxy_info
+  proxy_info="$(scutil --proxy 2>/dev/null || true)"
+  if [[ -z "${proxy_info}" ]]; then
+    return 1
+  fi
+
+  local https_enable https_host https_port http_enable http_host http_port proxy
+  https_enable="$(printf '%s\n' "${proxy_info}" | awk '/HTTPSEnable :/ {print $3; exit}')"
+  https_host="$(printf '%s\n' "${proxy_info}" | awk '/HTTPSProxy :/ {print $3; exit}')"
+  https_port="$(printf '%s\n' "${proxy_info}" | awk '/HTTPSPort :/ {print $3; exit}')"
+  http_enable="$(printf '%s\n' "${proxy_info}" | awk '/HTTPEnable :/ {print $3; exit}')"
+  http_host="$(printf '%s\n' "${proxy_info}" | awk '/HTTPProxy :/ {print $3; exit}')"
+  http_port="$(printf '%s\n' "${proxy_info}" | awk '/HTTPPort :/ {print $3; exit}')"
+
+  if [[ "${https_enable}" == "1" && -n "${https_host}" && -n "${https_port}" ]]; then
+    proxy="http://${https_host}:${https_port}"
+  elif [[ "${http_enable}" == "1" && -n "${http_host}" && -n "${http_port}" ]]; then
+    proxy="http://${http_host}:${http_port}"
+  else
+    return 1
+  fi
+
+  export HTTP_PROXY="${proxy}" HTTPS_PROXY="${proxy}" http_proxy="${proxy}" https_proxy="${proxy}"
+  echo "Enabled proxy from macOS system settings for this run: ${proxy}"
+  return 0
+}
+
+apply_macos_system_proxy_if_needed || true
 
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
