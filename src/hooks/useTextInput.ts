@@ -474,12 +474,12 @@ export function useTextInput({
       resetYankState()
     }
 
-    // macOS terminal compatibility: some terminals can emit a raw LF ('\n')
-    // for Enter without setting key.return. Treat that as submit so Enter
-    // does not get interpreted as "insert newline and stall submission".
+    // macOS terminal compatibility: some terminals can emit raw CR/LF for
+    // Enter without setting key.return. Treat that as submit so Enter does
+    // not get interpreted as "insert newline and stall submission".
     if (
       !key.return &&
-      filteredInput === '\n' &&
+      (filteredInput === '\n' || filteredInput === '\r') &&
       !key.ctrl &&
       !key.meta &&
       !key.shift
