@@ -312,10 +312,19 @@ allow_insecure_tls_if_enabled || true
 # Interactive mode (no args): run directly so TUI/output is streamed in real time.
 # The retry/auto-install loop below is intended for one-shot invocations (e.g. --print).
 if [[ $# -eq 0 ]]; then
+  # Interactive TUI expects streaming semantics. Keep one-shot mode on
+  # non-streaming for stability, but re-enable streaming in interactive mode.
+  export CLAUDE_CODE_FORCE_NON_STREAMING=0
+  export CLAUDE_CODE_OPENAI_COMPAT_ALLOW_STREAMING=1
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
   interactive_args=()
+  case "${OPENAI_COMPAT_INTERACTIVE_DEBUG:-0}" in
+    1|true|TRUE|yes|YES|on|ON)
+      interactive_args+=(--debug --debug-to-stderr)
+      ;;
+  esac
   case "${OPENAI_COMPAT_DISABLE_BARE:-0}" in
     1|true|TRUE|yes|YES|on|ON) ;;
     *) interactive_args+=(--bare) ;;

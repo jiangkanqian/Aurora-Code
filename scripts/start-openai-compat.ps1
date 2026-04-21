@@ -552,6 +552,10 @@ function Ensure-UndiciForProxy() {
 # Interactive mode (no args): run with attached TTY so Claude does not switch
 # to non-interactive/print path due to piped stdio capture.
 if (-not $CliArgs -or $CliArgs.Count -eq 0) {
+  # Interactive TUI expects streaming semantics. Keep one-shot mode on
+  # non-streaming for stability, but re-enable streaming in interactive mode.
+  [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "0", "Process")
+  [Environment]::SetEnvironmentVariable("CLAUDE_CODE_OPENAI_COMPAT_ALLOW_STREAMING", "1", "Process")
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_INTERACTIVE", "1", "Process")
   Ensure-PrivateStubs
   Patch-JsoncParserEsmImports | Out-Null
@@ -566,6 +570,11 @@ if (-not $CliArgs -or $CliArgs.Count -eq 0) {
   Ensure-UndiciForProxy | Out-Null
 
   $interactiveArgs = @()
+  $interactiveDebugRaw = [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_INTERACTIVE_DEBUG", "Process")
+  if ($interactiveDebugRaw -and @("1", "true", "yes", "on") -contains $interactiveDebugRaw.ToLowerInvariant()) {
+    $interactiveArgs += "--debug"
+    $interactiveArgs += "--debug-to-stderr"
+  }
   $disableBare = [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_DISABLE_BARE", "Process")
   if (-not ($disableBare -and @("1", "true", "yes", "on") -contains $disableBare.ToLowerInvariant())) {
     $interactiveArgs += "--bare"
