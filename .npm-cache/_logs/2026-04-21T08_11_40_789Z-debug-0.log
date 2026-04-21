@@ -5,20 +5,20 @@
 4 silly config load:file:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npmrc
 5 silly config load:file:C:\Users\jkq\.npmrc
 6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
-7 verbose title npm install fuse.js
-8 verbose argv "install" "fuse.js" "--save" "--prefer-online" "--offline" "false"
-9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_06_493Z-
-10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-10T02_03_06_493Z-debug-0.log
+7 verbose title npm install esbuild
+8 verbose argv "install" "--save-dev" "esbuild" "--cache" "C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\.npm-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-21T08_11_40_789Z-
+10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-21T08_11_40_789Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
 13 silly logfile done cleaning log files
 14 silly idealTree buildDeps
-15 silly fetch manifest fuse.js@*
-16 silly packumentCache full:https://registry.npmjs.org/fuse.js cache-miss
+15 silly fetch manifest esbuild@^0.27.7
+16 silly packumentCache full:https://registry.npmjs.org/esbuild cache-miss
 17 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules/@ant
-18 http fetch GET 200 https://registry.npmjs.org/fuse.js 1987ms (cache miss)
-19 silly packumentCache full:https://registry.npmjs.org/fuse.js set size:undefined disposed:false
-20 silly placeDep ROOT fuse.js@7.3.0 OK for: @anthropic-ai/claude-code-source@2.1.88 want: *
+18 http fetch GET 200 https://registry.npmjs.org/esbuild 841ms (cache revalidated)
+19 silly packumentCache full:https://registry.npmjs.org/esbuild set size:1254708 disposed:false
+20 silly placeDep ROOT esbuild@0.27.7 REPLACE for: @anthropic-ai/claude-code-source@2.1.88 want: ^0.27.7
 21 silly reify mark retired [
 21 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@ant\\claude-for-chrome-mcp'
 21 silly reify ]
@@ -28,9 +28,11 @@
 23 silly audit bulk request {
 23 silly audit   '@alcalzone/ansi-tokenize': [ '0.3.0' ],
 23 silly audit   '@anthropic-ai/sandbox-runtime': [ '0.0.49' ],
+23 silly audit   commander: [ '12.1.0', '14.0.3', '2.20.3' ],
 23 silly audit   zod: [ '3.25.76', '4.3.6' ],
 23 silly audit   '@anthropic-ai/sdk': [ '0.87.0' ],
 23 silly audit   '@babel/runtime': [ '7.29.2' ],
+23 silly audit   '@commander-js/extra-typings': [ '14.0.0' ],
 23 silly audit   '@esbuild/aix-ppc64': [ '0.27.7' ],
 23 silly audit   '@esbuild/android-arm': [ '0.27.7' ],
 23 silly audit   '@esbuild/android-arm64': [ '0.27.7' ],
@@ -103,7 +105,6 @@
 23 silly audit   'color-diff-napi': [ '0.0.1' ],
 23 silly audit   'color-name': [ '1.1.4' ],
 23 silly audit   'combined-stream': [ '1.0.8' ],
-23 silly audit   commander: [ '12.1.0', '2.20.3' ],
 23 silly audit   'content-disposition': [ '1.1.0' ],
 23 silly audit   'content-type': [ '1.0.5' ],
 23 silly audit   'convert-to-spaces': [ '2.0.1' ],
@@ -127,7 +128,6 @@
 23 silly audit   'es-errors': [ '1.3.0' ],
 23 silly audit   'es-object-atoms': [ '1.1.1' ],
 23 silly audit   'es-set-tostringtag': [ '2.1.0' ],
-23 silly audit   esbuild: [ '0.27.7' ],
 23 silly audit   'escape-html': [ '1.0.3' ],
 23 silly audit   'escape-string-regexp': [ '2.0.0' ],
 23 silly audit   etag: [ '1.8.1' ],
@@ -146,6 +146,7 @@
 23 silly audit   forwarded: [ '0.2.0' ],
 23 silly audit   fresh: [ '2.0.0' ],
 23 silly audit   'function-bind': [ '1.1.2' ],
+23 silly audit   'fuse.js': [ '7.3.0' ],
 23 silly audit   'get-caller-file': [ '2.0.5' ],
 23 silly audit   'get-east-asian-width': [ '1.5.0' ],
 23 silly audit   'get-intrinsic': [ '1.3.0' ],
@@ -243,6 +244,7 @@
 23 silly audit   'ts-algebra': [ '2.0.0' ],
 23 silly audit   'type-is': [ '2.0.1' ],
 23 silly audit   typescript: [ '6.0.2' ],
+23 silly audit   undici: [ '8.0.2' ],
 23 silly audit   'unicorn-magic': [ '0.3.0' ],
 23 silly audit   unpipe: [ '1.0.0' ],
 23 silly audit   'usehooks-ts': [ '3.1.1' ],
@@ -257,7 +259,7 @@
 23 silly audit   'yargs-parser': [ '18.1.3' ],
 23 silly audit   yoctocolors: [ '2.1.2' ],
 23 silly audit   'zod-to-json-schema': [ '3.25.2' ],
-23 silly audit   'fuse.js': [ '7.3.0' ]
+23 silly audit   esbuild: [ '0.27.7' ]
 23 silly audit }
 24 verbose reify failed optional dependency C:\Users\jkq\work\workspace\claude-code-source-code-main\node_modules\@esbuild\win32-ia32
 25 silly reify mark deleted [
@@ -359,39 +361,75 @@
 73 silly reify mark deleted [
 73 silly reify   'C:\\Users\\jkq\\work\\workspace\\claude-code-source-code-main\\node_modules\\@esbuild\\aix-ppc64'
 73 silly reify ]
-74 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 358ms
-75 silly audit report {}
-76 http fetch GET 200 https://registry.npmjs.org/fuse.js/-/fuse.js-7.3.0.tgz 1941ms (cache miss)
-77 silly ADD node_modules/fuse.js
-78 silly ADD node_modules/@esbuild/win32-ia32
-79 silly ADD node_modules/@esbuild/win32-arm64
-80 silly ADD node_modules/@esbuild/sunos-x64
-81 silly ADD node_modules/@esbuild/openharmony-arm64
-82 silly ADD node_modules/@esbuild/openbsd-x64
-83 silly ADD node_modules/@esbuild/openbsd-arm64
-84 silly ADD node_modules/@esbuild/netbsd-x64
-85 silly ADD node_modules/@esbuild/netbsd-arm64
-86 silly ADD node_modules/@esbuild/linux-x64
-87 silly ADD node_modules/@esbuild/linux-s390x
-88 silly ADD node_modules/@esbuild/linux-riscv64
-89 silly ADD node_modules/@esbuild/linux-ppc64
-90 silly ADD node_modules/@esbuild/linux-mips64el
-91 silly ADD node_modules/@esbuild/linux-loong64
-92 silly ADD node_modules/@esbuild/linux-ia32
-93 silly ADD node_modules/@esbuild/linux-arm64
-94 silly ADD node_modules/@esbuild/linux-arm
-95 silly ADD node_modules/@esbuild/freebsd-x64
-96 silly ADD node_modules/@esbuild/freebsd-arm64
-97 silly ADD node_modules/@esbuild/darwin-x64
-98 silly ADD node_modules/@esbuild/darwin-arm64
-99 silly ADD node_modules/@esbuild/android-x64
-100 silly ADD node_modules/@esbuild/android-arm64
-101 silly ADD node_modules/@esbuild/android-arm
-102 silly ADD node_modules/@esbuild/aix-ppc64
-103 silly REMOVE node_modules/@ant/claude-for-chrome-mcp
-104 verbose cwd C:\Users\jkq\work\workspace\claude-code-source-code-main
-105 verbose os Windows_NT 10.0.26100
-106 verbose node v24.11.0
-107 verbose npm  v11.6.1
-108 verbose exit 0
-109 info ok
+74 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 211ms
+75 silly audit report {
+75 silly audit report   'follow-redirects': [
+75 silly audit report     {
+75 silly audit report       id: 1116560,
+75 silly audit report       url: 'https://github.com/advisories/GHSA-r4q5-vmmm-2653',
+75 silly audit report       title: 'follow-redirects leaks Custom Authentication Headers to Cross-Domain Redirect Targets',
+75 silly audit report       severity: 'moderate',
+75 silly audit report       vulnerable_versions: '<=1.15.11',
+75 silly audit report       cwe: [Array],
+75 silly audit report       cvss: [Object]
+75 silly audit report     }
+75 silly audit report   ],
+75 silly audit report   hono: [
+75 silly audit report     {
+75 silly audit report       id: 1116669,
+75 silly audit report       url: 'https://github.com/advisories/GHSA-458j-xx4x-4375',
+75 silly audit report       title: 'hono Improperly Handles JSX Attribute Names Allows HTML Injection in hono/jsx SSR',
+75 silly audit report       severity: 'moderate',
+75 silly audit report       vulnerable_versions: '<4.12.14',
+75 silly audit report       cwe: [Array],
+75 silly audit report       cvss: [Object]
+75 silly audit report     }
+75 silly audit report   ]
+75 silly audit report }
+76 silly packumentCache corgi:https://registry.npmjs.org/follow-redirects cache-miss
+77 silly packumentCache corgi:https://registry.npmjs.org/hono cache-miss
+78 http fetch GET 200 https://registry.npmjs.org/follow-redirects 412ms (cache miss)
+79 silly packumentCache corgi:https://registry.npmjs.org/follow-redirects set size:undefined disposed:false
+80 http fetch GET 200 https://registry.npmjs.org/hono 2549ms (cache miss)
+81 silly packumentCache corgi:https://registry.npmjs.org/hono set size:undefined disposed:false
+82 silly packumentCache corgi:https://registry.npmjs.org/axios cache-miss
+83 http fetch GET 200 https://registry.npmjs.org/axios 781ms (cache miss)
+84 silly packumentCache corgi:https://registry.npmjs.org/axios set size:undefined disposed:false
+85 silly packumentCache corgi:https://registry.npmjs.org/@hono%2fnode-server cache-miss
+86 silly packumentCache corgi:https://registry.npmjs.org/@modelcontextprotocol%2fsdk cache-miss
+87 http fetch GET 200 https://registry.npmjs.org/@hono%2fnode-server 610ms (cache miss)
+88 silly packumentCache corgi:https://registry.npmjs.org/@hono%2fnode-server set size:undefined disposed:false
+89 http fetch GET 200 https://registry.npmjs.org/@modelcontextprotocol%2fsdk 1023ms (cache miss)
+90 silly packumentCache corgi:https://registry.npmjs.org/@modelcontextprotocol%2fsdk set size:undefined disposed:false
+91 silly ADD node_modules/@esbuild/win32-ia32
+92 silly ADD node_modules/@esbuild/win32-arm64
+93 silly ADD node_modules/@esbuild/sunos-x64
+94 silly ADD node_modules/@esbuild/openharmony-arm64
+95 silly ADD node_modules/@esbuild/openbsd-x64
+96 silly ADD node_modules/@esbuild/openbsd-arm64
+97 silly ADD node_modules/@esbuild/netbsd-x64
+98 silly ADD node_modules/@esbuild/netbsd-arm64
+99 silly ADD node_modules/@esbuild/linux-x64
+100 silly ADD node_modules/@esbuild/linux-s390x
+101 silly ADD node_modules/@esbuild/linux-riscv64
+102 silly ADD node_modules/@esbuild/linux-ppc64
+103 silly ADD node_modules/@esbuild/linux-mips64el
+104 silly ADD node_modules/@esbuild/linux-loong64
+105 silly ADD node_modules/@esbuild/linux-ia32
+106 silly ADD node_modules/@esbuild/linux-arm64
+107 silly ADD node_modules/@esbuild/linux-arm
+108 silly ADD node_modules/@esbuild/freebsd-x64
+109 silly ADD node_modules/@esbuild/freebsd-arm64
+110 silly ADD node_modules/@esbuild/darwin-x64
+111 silly ADD node_modules/@esbuild/darwin-arm64
+112 silly ADD node_modules/@esbuild/android-x64
+113 silly ADD node_modules/@esbuild/android-arm64
+114 silly ADD node_modules/@esbuild/android-arm
+115 silly ADD node_modules/@esbuild/aix-ppc64
+116 silly REMOVE node_modules/@ant/claude-for-chrome-mcp
+117 verbose cwd C:\Users\jkq\work\workspace\claude-code-source-code-main
+118 verbose os Windows_NT 10.0.26100
+119 verbose node v24.11.0
+120 verbose npm  v11.6.1
+121 verbose exit 0
+122 info ok

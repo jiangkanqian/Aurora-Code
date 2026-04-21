@@ -38,6 +38,7 @@ export function usePasteHandler({
     timeoutId: ReturnType<typeof setTimeout> | null
   }
   isPasting: boolean
+  hasPendingPaste: boolean
 } {
   const [pasteState, setPasteState] = React.useState<{
     chunks: string[]
@@ -281,5 +282,6 @@ export function usePasteHandler({
     wrappedOnInput,
     pasteState,
     isPasting,
+    hasPendingPaste: pasteState.timeoutId !== null || pastePendingRef.current,
   }
 }

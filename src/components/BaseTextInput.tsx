@@ -53,11 +53,15 @@ export function BaseTextInput(t0) {
   const cursorRef = useDeclaredCursor(t2);
   const {
     wrappedOnInput,
-    isPasting: t3
+    isPasting: t3,
+    hasPendingPaste,
   } = usePasteHandler({
     onPaste: props.onPaste,
     onInput: (input, key) => {
-      if (isPasting && key.return) {
+      // Only swallow Enter while a paste batch is actively pending. Some
+      // terminals can leave isPasting=true briefly (or stale), which made
+      // Enter appear "dead" in interactive mode.
+      if (hasPendingPaste && key.return) {
         return;
       }
       onInput(input, key);
