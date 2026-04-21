@@ -553,7 +553,15 @@ if (-not $CliArgs -or $CliArgs.Count -eq 0) {
   }
   Ensure-UndiciForProxy | Out-Null
 
-  & node $CliDist
+  $interactiveArgs = @()
+  $disableBare = [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_DISABLE_BARE", "Process")
+  if (-not ($disableBare -and @("1", "true", "yes", "on") -contains $disableBare.ToLowerInvariant())) {
+    $interactiveArgs += "--bare"
+    Write-Host "Launching interactive mode (bare)..." -ForegroundColor Cyan
+  } else {
+    Write-Host "Launching interactive mode..." -ForegroundColor Cyan
+  }
+  & node $CliDist @interactiveArgs
   exit $LASTEXITCODE
 }
 

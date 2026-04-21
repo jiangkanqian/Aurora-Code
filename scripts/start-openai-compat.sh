@@ -311,8 +311,30 @@ if [[ $# -eq 0 ]]; then
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
-  echo "Launching interactive mode..."
-  exec node "${CLI_DIST}"
+  interactive_args=()
+  case "${OPENAI_COMPAT_DISABLE_BARE:-0}" in
+    1|true|TRUE|yes|YES|on|ON) ;;
+    *) interactive_args+=(--bare) ;;
+  esac
+  if [[ ${#interactive_args[@]} -gt 0 ]]; then
+    echo "Launching interactive mode (bare)..."
+  else
+    echo "Launching interactive mode..."
+  fi
+  exec node "${CLI_DIST}" "${interactive_args[@]}"
+fi
+
+# Tolerate common typo: --debug-to-stederr -> --debug-to-stderr
+if [[ $# -gt 0 ]]; then
+  normalized_args=()
+  for i in "$@"; do
+    if [[ "$i" == "--debug-to-stederr" ]]; then
+      normalized_args+=("--debug-to-stderr")
+    else
+      normalized_args+=("$i")
+    fi
+  done
+  set -- "${normalized_args[@]}"
 fi
 
 while [[ ${attempt} -le ${max_attempts} ]]; do
