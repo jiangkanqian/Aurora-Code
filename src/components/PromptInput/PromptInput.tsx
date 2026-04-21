@@ -983,6 +983,7 @@ function PromptInput({
   }, []);
   const onSubmit = useCallback(async (inputParam: string, isSubmittingSlashCommand = false) => {
     inputParam = inputParam.trimEnd();
+    const hasTypedInput = inputParam.trim() !== '' || Object.values(pastedContents).some(c => c.type === 'image');
 
     // Don't submit if a footer indicator is being opened. Read fresh from
     // store — footer:openSelected calls selectFooterItem(null) then onSubmit
@@ -991,7 +992,13 @@ function PromptInput({
     // selection (pill disappeared) doesn't swallow Enter.
     const state = store.getState();
     if (state.footerSelection && footerItems.includes(state.footerSelection)) {
-      return;
+      if (!hasTypedInput) {
+        return;
+      }
+      setAppState(prev => ({
+        ...prev,
+        footerSelection: null
+      }));
     }
 
     // Enter in selection modes confirms selection (useBackgroundTaskNavigation).
@@ -1071,7 +1078,7 @@ function PromptInput({
     // PromptInput UX: Check if suggestions dropdown is showing
     // For directory suggestions, allow submission (Tab is used for completion)
     const hasDirectorySuggestions = suggestionsState.suggestions.length > 0 && suggestionsState.suggestions.every(s => s.description === 'directory');
-    if (suggestionsState.suggestions.length > 0 && !isSubmittingSlashCommand && !hasDirectorySuggestions) {
+    if (suggestionsState.suggestions.length > 0 && !isSubmittingSlashCommand && !hasDirectorySuggestions && inputParam.trim() === '') {
       logForDebugging(`[onSubmit] early return: suggestions showing (count=${suggestionsState.suggestions.length})`);
       return; // Don't submit, user needs to clear suggestions first
     }
