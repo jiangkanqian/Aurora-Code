@@ -981,8 +981,21 @@ function PromptInput({
   const setSuggestionsState = useCallback((updater: typeof suggestionsState | ((prev: typeof suggestionsState) => typeof suggestionsState)) => {
     setSuggestionsStateRaw(prev => typeof updater === 'function' ? updater(prev) : updater);
   }, []);
+  const lastSubmitRef = useRef<{
+    at: number;
+    input: string;
+  } | null>(null);
   const onSubmit = useCallback(async (inputParam: string, isSubmittingSlashCommand = false) => {
     inputParam = inputParam.trimEnd();
+    const now = Date.now();
+    const last = lastSubmitRef.current;
+    if (last && now - last.at < 250 && last.input === inputParam) {
+      return;
+    }
+    lastSubmitRef.current = {
+      at: now,
+      input: inputParam
+    };
     const hasTypedInput = inputParam.trim() !== '' || Object.values(pastedContents).some(c => c.type === 'image');
 
     // Don't submit if a footer indicator is being opened. Read fresh from
@@ -1911,7 +1924,7 @@ function PromptInput({
     // Fallback submit path: if the text input is not focused (for example,
     // a footer pill is selected) Enter may not reach TextInput's onSubmit.
     // In that case, submit directly when there is user input.
-    if ((key.return || char === '\r' || char === '\n') && !helpOpen && !isLoading && (footerItemSelected || isSearchingHistory || isModalOverlayActive)) {
+    if ((key.return || char === '\r' || char === '\n') && !helpOpen && !isLoading && !showTeamsDialog && !showQuickOpen && !showGlobalSearch && !showHistoryPicker) {
       const hasTypedInput = input.trim().length > 0 || Object.values(pastedContents).some(c => c.type === 'image');
       if (hasTypedInput) {
         void onSubmit(input);
