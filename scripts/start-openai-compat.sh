@@ -140,6 +140,19 @@ enable_node_extra_ca_if_found() {
   return 0
 }
 
+allow_insecure_tls_if_enabled() {
+  case "${OPENAI_COMPAT_INSECURE_TLS:-0}" in
+    1|true|TRUE|yes|YES|on|ON)
+      if [[ "${NODE_TLS_REJECT_UNAUTHORIZED:-1}" != "0" ]]; then
+        export NODE_TLS_REJECT_UNAUTHORIZED=0
+        echo "WARNING: TLS certificate verification is disabled for this run (OPENAI_COMPAT_INSECURE_TLS enabled)."
+      fi
+      return 0
+      ;;
+  esac
+  return 1
+}
+
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
 patch_jsonc_parser_esm_imports() {
@@ -272,12 +285,14 @@ max_attempts=60
 attempt=1
 tried_system_ca=false
 tried_extra_ca=false
+tried_insecure_tls=false
 
 # Interactive mode (no args): run directly so TUI/output is streamed in real time.
 # The retry/auto-install loop below is intended for one-shot invocations (e.g. --print).
 if [[ $# -eq 0 ]]; then
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
+  allow_insecure_tls_if_enabled || true
   echo "Launching interactive mode..."
   exec node "${CLI_DIST}"
 fi
@@ -314,6 +329,15 @@ while [[ ${attempt} -le ${max_attempts} ]]; do
           continue
         fi
         tried_extra_ca=true
+      fi
+      if [[ "${tried_insecure_tls}" == "false" ]]; then
+        if allow_insecure_tls_if_enabled; then
+          tried_insecure_tls=true
+          echo "Retrying startup with TLS verification disabled..."
+          attempt=$((attempt + 1))
+          continue
+        fi
+        tried_insecure_tls=true
       fi
     fi
     if printf '%s' "${output}" | grep -q "jsonc-parser/lib/esm/impl/format"; then
