@@ -92,6 +92,54 @@ apply_macos_system_proxy_if_needed() {
 
 apply_macos_system_proxy_if_needed || true
 
+ensure_macos_system_ca() {
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return 1
+  fi
+  if [[ "${NODE_OPTIONS:-}" == *"--use-system-ca"* ]]; then
+    return 1
+  fi
+  export NODE_OPTIONS="${NODE_OPTIONS:-} --use-system-ca"
+  echo "Enabled Node system CA trust for this run (--use-system-ca)."
+  return 0
+}
+
+find_local_proxy_ca_cert() {
+  local candidates=(
+    "${OPENAI_COMPAT_CA_CERT:-}"
+    "${SSL_CERT_FILE:-}"
+    "${REQUESTS_CA_BUNDLE:-}"
+    "${HOME}/.config/clash/cacert.pem"
+    "${HOME}/.config/clash/.cache/cacert.pem"
+    "${HOME}/.config/mihomo/ca.crt"
+    "${HOME}/.config/mihomo/cacert.pem"
+    "${HOME}/.config/sing-box/cacert.pem"
+    "${HOME}/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev/profiles/mihomo/ca.crt"
+  )
+  local cert
+  for cert in "${candidates[@]}"; do
+    if [[ -n "${cert}" && -f "${cert}" ]]; then
+      printf '%s' "${cert}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+enable_node_extra_ca_if_found() {
+  if [[ -n "${NODE_EXTRA_CA_CERTS:-}" && -f "${NODE_EXTRA_CA_CERTS}" ]]; then
+    return 1
+  fi
+  local cert
+  cert="$(find_local_proxy_ca_cert || true)"
+  if [[ -z "${cert}" ]]; then
+    return 1
+  fi
+  export NODE_EXTRA_CA_CERTS="${cert}"
+  echo "Enabled custom CA bundle for Node: ${cert}"
+  return 0
+}
+
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
 patch_jsonc_parser_esm_imports() {
@@ -222,10 +270,14 @@ JS
 
 max_attempts=60
 attempt=1
+tried_system_ca=false
+tried_extra_ca=false
 
 # Interactive mode (no args): run directly so TUI/output is streamed in real time.
 # The retry/auto-install loop below is intended for one-shot invocations (e.g. --print).
 if [[ $# -eq 0 ]]; then
+  ensure_macos_system_ca || true
+  enable_node_extra_ca_if_found || true
   echo "Launching interactive mode..."
   exec node "${CLI_DIST}"
 fi
@@ -244,6 +296,26 @@ while [[ ${attempt} -le ${max_attempts} ]]; do
 
   pkg="$(printf '%s' "${output}" | sed -n "s/.*Cannot find package '\([^']*\)'.*/\1/p" | head -n 1)"
   if [[ -z "${pkg}" ]]; then
+    if printf '%s' "${output}" | grep -Eiq "unable to get local issuer certificate|UNABLE_TO_GET_ISSUER_CERT_LOCALLY|self[- ]signed certificate|unable to verify the first certificate"; then
+      if [[ "${tried_system_ca}" == "false" ]]; then
+        if ensure_macos_system_ca; then
+          tried_system_ca=true
+          echo "Retrying startup with Node system CA trust..."
+          attempt=$((attempt + 1))
+          continue
+        fi
+        tried_system_ca=true
+      fi
+      if [[ "${tried_extra_ca}" == "false" ]]; then
+        if enable_node_extra_ca_if_found; then
+          tried_extra_ca=true
+          echo "Retrying startup with detected CA bundle..."
+          attempt=$((attempt + 1))
+          continue
+        fi
+        tried_extra_ca=true
+      fi
+    fi
     if printf '%s' "${output}" | grep -q "jsonc-parser/lib/esm/impl/format"; then
       patch_jsonc_parser_esm_imports && {
         attempt=$((attempt + 1))

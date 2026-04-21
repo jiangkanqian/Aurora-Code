@@ -1,0 +1,35 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\jkq\work\workspace\.npmrc
+5 silly config load:file:C:\Users\jkq\.npmrc
+6 silly config load:file:C:\Program Files\nodejs\node_global\etc\npmrc
+7 verbose title npm install undici
+8 verbose argv "install" "undici" "--save" "--prefer-online" "--offline" "false"
+9 verbose logfile logs-max:10 dir:C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-21T06_51_13_491Z-
+10 verbose logfile C:\Users\jkq\work\workspace\claude-code-source-code-main\.npm-cache\_logs\2026-04-21T06_51_13_491Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest undici@*
+16 silly packumentCache full:https://registry.npmjs.org/undici cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/undici 2676ms (cache updated)
+18 silly packumentCache full:https://registry.npmjs.org/undici set size:undefined disposed:false
+19 silly placeDep ROOT undici@8.1.0 OK for:  want: *
+20 silly reify moves {}
+21 http fetch GET 200 https://registry.npmjs.org/npm 2906ms
+22 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-8.1.0.tgz 9266ms (cache miss)
+23 silly ADD node_modules/undici
+24 verbose cwd C:\Users\jkq\work\workspace
+25 verbose os Windows_NT 10.0.26100
+26 verbose node v24.11.0
+27 verbose npm  v11.6.1
+28 notice
+28 notice New minor version of npm available! 11.6.1 -> 11.12.1
+28 notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+28 notice To update run: npm install -g npm@11.12.1
+28 notice  { force: true, Symbol(proc-log.meta): true }
+29 verbose exit 0
+30 info ok
