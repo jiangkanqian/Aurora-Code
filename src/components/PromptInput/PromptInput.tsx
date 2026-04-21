@@ -1908,6 +1908,17 @@ function PromptInput({
       return;
     }
 
+    // Fallback submit path: if the text input is not focused (for example,
+    // a footer pill is selected) Enter may not reach TextInput's onSubmit.
+    // In that case, submit directly when there is user input.
+    if (key.return && !helpOpen && !isLoading && (footerItemSelected || isSearchingHistory || isModalOverlayActive)) {
+      const hasTypedInput = input.trim().length > 0 || Object.values(pastedContents).some(c => c.type === 'image');
+      if (hasTypedInput) {
+        void onSubmit(input);
+        return;
+      }
+    }
+
     // Exit special modes when backspace/escape/delete/ctrl+u is pressed at cursor position 0
     if (cursorOffset === 0 && (key.escape || key.backspace || key.delete || key.ctrl && char === 'u')) {
       onModeChange('prompt');
