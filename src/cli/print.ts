@@ -1735,7 +1735,7 @@ function runHeadlessStreaming(
   let pluginInstallPromise: Promise<void> | null = null
   // --bare / SIMPLE: skip plugin install. Scripted calls don't add plugins
   // mid-session; the next interactive run reconciles.
-  if (!isBareMode()) {
+  if (!isBareMode() && !isEnvTruthy(process.env.CLAUDE_CODE_USE_OPENAI_COMPAT)) {
     if (isEnvTruthy(process.env.CLAUDE_CODE_SYNC_PLUGIN_INSTALL)) {
       pluginInstallPromise = installPluginsAndApplyMcpInBackground()
     } else {

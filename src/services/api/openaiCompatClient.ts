@@ -76,6 +76,18 @@ function getOpenAIApiKey(): string | undefined {
   return process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY
 }
 
+function getOpenAICompatRequestTimeoutMs(): number {
+  const raw =
+    process.env.OPENAI_COMPAT_REQUEST_TIMEOUT_MS ||
+    process.env.API_TIMEOUT_MS ||
+    '45000'
+  const parsed = Number.parseInt(raw, 10)
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return 45000
+  }
+  return parsed
+}
+
 function safeParseJsonObject(input: string): Record<string, unknown> {
   try {
     const parsed = JSON.parse(input)
@@ -496,37 +508,70 @@ async function requestOpenAIChatCompletions(
     has_tools: tools.length > 0,
   })
 
-  const response = await fetchFn(`${baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-    ...(getProxyFetchOptions({
-      forAnthropicAPI: true,
-    }) as Record<string, unknown>),
-    ...(requestOptions?.signal ? { signal: requestOptions.signal } : {}),
-  }).catch(async err => {
-    const hasProxy = !!getProxyUrl()
-    if (!hasProxy) throw err
-
-    compatDebug('fetch failed, trying axios fallback', {
-      message: err instanceof Error ? err.message : String(err),
-    })
-    const client = createAxiosInstance()
-    const axiosResp = await client.post(`${baseUrl}/chat/completions`, body, {
-      headers: Object.fromEntries(headers.entries()),
-      timeout: parseInt(process.env.API_TIMEOUT_MS || String(600 * 1000), 10),
-      validateStatus: () => true,
-      signal: requestOptions?.signal,
-    })
-    const fallbackHeaders = new Headers()
-    for (const [k, v] of Object.entries(axiosResp.headers ?? {})) {
-      if (typeof v === 'string') fallbackHeaders.set(k, v)
+  const timeoutMs = getOpenAICompatRequestTimeoutMs()
+  const timeoutController = new AbortController()
+  const timeoutHandle = setTimeout(() => {
+    timeoutController.abort(
+      new Error(`OpenAI-compatible request timed out after ${timeoutMs}ms`),
+    )
+  }, timeoutMs)
+  const externalSignal = requestOptions?.signal
+  const onExternalAbort = () =>
+    timeoutController.abort(
+      externalSignal?.reason ?? new Error('OpenAI-compatible request aborted'),
+    )
+  if (externalSignal) {
+    if (externalSignal.aborted) {
+      onExternalAbort()
+    } else {
+      externalSignal.addEventListener('abort', onExternalAbort, {
+        once: true,
+      })
     }
-    return new Response(JSON.stringify(axiosResp.data), {
-      status: axiosResp.status,
-      headers: fallbackHeaders,
+  }
+
+  let response: Response
+  try {
+    response = await fetchFn(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+      ...(getProxyFetchOptions({
+        forAnthropicAPI: true,
+      }) as Record<string, unknown>),
+      signal: timeoutController.signal,
+    }).catch(async err => {
+      if (timeoutController.signal.aborted && !externalSignal?.aborted) {
+        throw new Error(
+          `OpenAI-compatible request timed out after ${timeoutMs}ms`,
+        )
+      }
+      const hasProxy = !!getProxyUrl()
+      if (!hasProxy) throw err
+
+      compatDebug('fetch failed, trying axios fallback', {
+        message: err instanceof Error ? err.message : String(err),
+      })
+      const client = createAxiosInstance()
+      const axiosResp = await client.post(`${baseUrl}/chat/completions`, body, {
+        headers: Object.fromEntries(headers.entries()),
+        timeout: timeoutMs,
+        validateStatus: () => true,
+        signal: timeoutController.signal,
+      })
+      const fallbackHeaders = new Headers()
+      for (const [k, v] of Object.entries(axiosResp.headers ?? {})) {
+        if (typeof v === 'string') fallbackHeaders.set(k, v)
+      }
+      return new Response(JSON.stringify(axiosResp.data), {
+        status: axiosResp.status,
+        headers: fallbackHeaders,
+      })
     })
-  })
+  } finally {
+    clearTimeout(timeoutHandle)
+    externalSignal?.removeEventListener('abort', onExternalAbort)
+  }
 
   if (!response.ok) {
     const errText = await response.text().catch(() => '')

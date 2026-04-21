@@ -50,6 +50,18 @@ Get-Content $EnvFile | ForEach-Object {
 if (-not [Environment]::GetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "Process")) {
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "1", "Process")
 }
+if (-not [Environment]::GetEnvironmentVariable("CLAUDE_CODE_MAX_RETRIES", "Process")) {
+  [Environment]::SetEnvironmentVariable("CLAUDE_CODE_MAX_RETRIES", "1", "Process")
+}
+if (-not [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_REQUEST_TIMEOUT_MS", "Process")) {
+  [Environment]::SetEnvironmentVariable("OPENAI_COMPAT_REQUEST_TIMEOUT_MS", "45000", "Process")
+}
+if (-not [Environment]::GetEnvironmentVariable("API_TIMEOUT_MS", "Process")) {
+  [Environment]::SetEnvironmentVariable("API_TIMEOUT_MS", "45000", "Process")
+}
+if (-not [Environment]::GetEnvironmentVariable("CLAUDE_CODE_ENABLE_TELEMETRY", "Process")) {
+  [Environment]::SetEnvironmentVariable("CLAUDE_CODE_ENABLE_TELEMETRY", "0", "Process")
+}
 $openaiBase = [Environment]::GetEnvironmentVariable("OPENAI_BASE_URL", "Process")
 if ($openaiBase) {
   [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $openaiBase, "Process")
