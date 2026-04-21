@@ -29,6 +29,17 @@ if [[ -z "${ANTHROPIC_API_KEY:-}" && -n "${OPENAI_API_KEY:-}" ]]; then
   export ANTHROPIC_API_KEY="${OPENAI_API_KEY}"
 fi
 
+# In interactive mode the core query path is streaming-first. Some OpenAI-
+# compatible gateways keep the stream open without Anthropic-formatted events,
+# which can look like "Enter后一直无响应". Enable stream-idle watchdog so we
+# can abort and fall back to non-streaming automatically.
+if [[ -z "${CLAUDE_ENABLE_STREAM_WATCHDOG:-}" ]]; then
+  export CLAUDE_ENABLE_STREAM_WATCHDOG=1
+fi
+if [[ -z "${CLAUDE_STREAM_IDLE_TIMEOUT_MS:-}" ]]; then
+  export CLAUDE_STREAM_IDLE_TIMEOUT_MS=20000
+fi
+
 if [[ ! -f "${CLI_DIST}" ]]; then
   echo "Missing dist/cli.js. Build first: npm run build"
   exit 1

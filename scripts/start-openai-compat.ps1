@@ -45,6 +45,31 @@ Get-Content $EnvFile | ForEach-Object {
   [Environment]::SetEnvironmentVariable($name, $value, "Process")
 }
 
+# Force OpenAI-compatible runtime mode for this launcher.
+[Environment]::SetEnvironmentVariable("CLAUDE_CODE_USE_OPENAI_COMPAT", "1", "Process")
+$openaiBase = [Environment]::GetEnvironmentVariable("OPENAI_BASE_URL", "Process")
+if ($openaiBase) {
+  [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $openaiBase, "Process")
+}
+$openaiKey = [Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "Process")
+$anthropicKey = [Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "Process")
+if (-not $openaiKey -and $anthropicKey) {
+  [Environment]::SetEnvironmentVariable("OPENAI_API_KEY", $anthropicKey, "Process")
+}
+if (-not $anthropicKey -and $openaiKey) {
+  [Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $openaiKey, "Process")
+}
+
+# Interactive mode is streaming-first. Some OpenAI-compatible gateways keep
+# streams open without Anthropic-formatted events, which appears as "Enter后无响应".
+# Enable stream watchdog so runtime can auto-fallback to non-streaming.
+if (-not [Environment]::GetEnvironmentVariable("CLAUDE_ENABLE_STREAM_WATCHDOG", "Process")) {
+  [Environment]::SetEnvironmentVariable("CLAUDE_ENABLE_STREAM_WATCHDOG", "1", "Process")
+}
+if (-not [Environment]::GetEnvironmentVariable("CLAUDE_STREAM_IDLE_TIMEOUT_MS", "Process")) {
+  [Environment]::SetEnvironmentVariable("CLAUDE_STREAM_IDLE_TIMEOUT_MS", "20000", "Process")
+}
+
 if (-not (Test-Path $CliDist)) {
   Write-Host "Missing dist\\cli.js (or dist\\cli.cjs). Build first: npm.cmd run build" -ForegroundColor Yellow
   exit 1
