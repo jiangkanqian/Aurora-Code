@@ -474,6 +474,34 @@ export function useTextInput({
       resetYankState()
     }
 
+    // macOS terminal compatibility: some terminals can emit a raw LF ('\n')
+    // for Enter without setting key.return. Treat that as submit so Enter
+    // does not get interpreted as "insert newline and stall submission".
+    if (
+      !key.return &&
+      filteredInput === '\n' &&
+      !key.ctrl &&
+      !key.meta &&
+      !key.shift
+    ) {
+      // Keep backslash+Enter multiline behavior consistent with handleEnter().
+      if (
+        multiline &&
+        cursor.offset > 0 &&
+        cursor.text[cursor.offset - 1] === '\\'
+      ) {
+        markBackslashReturnUsed()
+        const continuedCursor = cursor.backspace().insert('\n')
+        if (cursor.text !== continuedCursor.text) {
+          onChange(continuedCursor.text)
+        }
+        setOffset(continuedCursor.offset)
+      } else {
+        onSubmit?.(originalValue)
+      }
+      return
+    }
+
     const nextCursor = mapKey(key)(filteredInput)
     if (nextCursor) {
       if (!cursor.equals(nextCursor)) {
