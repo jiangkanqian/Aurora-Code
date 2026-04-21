@@ -19,6 +19,7 @@ set +a
 
 # Force OpenAI-compatible runtime mode for this launcher.
 export CLAUDE_CODE_USE_OPENAI_COMPAT=1
+export CLAUDE_CODE_FORCE_NON_STREAMING="${CLAUDE_CODE_FORCE_NON_STREAMING:-1}"
 if [[ -n "${OPENAI_BASE_URL:-}" ]]; then
   export ANTHROPIC_BASE_URL="${OPENAI_BASE_URL}"
 fi
@@ -297,6 +298,12 @@ attempt=1
 tried_system_ca=false
 tried_extra_ca=false
 tried_insecure_tls=false
+
+# For one-shot mode we also apply these before first attempt to avoid
+# deterministic "fail -> patch env -> retry" behavior.
+ensure_macos_system_ca || true
+enable_node_extra_ca_if_found || true
+allow_insecure_tls_if_enabled || true
 
 # Interactive mode (no args): run directly so TUI/output is streamed in real time.
 # The retry/auto-install loop below is intended for one-shot invocations (e.g. --print).

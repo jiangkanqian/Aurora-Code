@@ -47,6 +47,9 @@ Get-Content $EnvFile | ForEach-Object {
 
 # Force OpenAI-compatible runtime mode for this launcher.
 [Environment]::SetEnvironmentVariable("CLAUDE_CODE_USE_OPENAI_COMPAT", "1", "Process")
+if (-not [Environment]::GetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "Process")) {
+  [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "1", "Process")
+}
 $openaiBase = [Environment]::GetEnvironmentVariable("OPENAI_BASE_URL", "Process")
 if ($openaiBase) {
   [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $openaiBase, "Process")
