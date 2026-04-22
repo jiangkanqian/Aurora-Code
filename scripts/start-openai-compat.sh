@@ -41,6 +41,8 @@ export CLAUDE_CODE_MAX_RETRIES="${CLAUDE_CODE_MAX_RETRIES:-1}"
 export OPENAI_COMPAT_REQUEST_TIMEOUT_MS="${OPENAI_COMPAT_REQUEST_TIMEOUT_MS:-45000}"
 export API_TIMEOUT_MS="${API_TIMEOUT_MS:-45000}"
 export CLAUDE_CODE_ENABLE_TELEMETRY="${CLAUDE_CODE_ENABLE_TELEMETRY:-0}"
+# Prefer system ripgrep on macOS to avoid missing bundled binary in source builds.
+export USE_BUILTIN_RIPGREP="${USE_BUILTIN_RIPGREP:-0}"
 if [[ -n "${OPENAI_BASE_URL:-}" ]]; then
   export ANTHROPIC_BASE_URL="${OPENAI_BASE_URL}"
 fi
@@ -358,6 +360,16 @@ JS
   return 1
 }
 
+ensure_node_package_present() {
+  local pkg="$1"
+  if [[ -z "${pkg}" ]]; then
+    return 1
+  fi
+  node -e "require.resolve('${pkg}')" >/dev/null 2>&1 && return 0
+  install_missing_package "${pkg}" || return 1
+  return 0
+}
+
 max_attempts=60
 attempt=1
 tried_system_ca=false
@@ -377,9 +389,11 @@ if [[ $# -eq 0 ]]; then
   # non-streaming for stability, but re-enable streaming in interactive mode.
   export CLAUDE_CODE_FORCE_NON_STREAMING=0
   export CLAUDE_CODE_OPENAI_COMPAT_ALLOW_STREAMING=1
+  export CLAUDE_CODE_FORCE_INTERACTIVE=1
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
+  ensure_node_package_present "proper-lockfile" || true
   if should_use_safe_repl; then
     run_safe_repl
     exit 0
@@ -390,11 +404,14 @@ if [[ $# -eq 0 ]]; then
       interactive_args+=(--debug --debug-to-stderr)
       ;;
   esac
-  case "${OPENAI_COMPAT_DISABLE_BARE:-0}" in
-    1|true|TRUE|yes|YES|on|ON) ;;
-    *) interactive_args+=(--bare) ;;
+  case "${OPENAI_COMPAT_FORCE_BARE:-0}" in
+    1|true|TRUE|yes|YES|on|ON)
+      interactive_args+=(--bare)
+      ;;
+    *)
+      ;;
   esac
-  if [[ ${#interactive_args[@]} -gt 0 ]]; then
+  if [[ "${interactive_args[*]:-}" == *"--bare"* ]]; then
     echo "Launching interactive mode (bare)..."
   else
     echo "Launching interactive mode..."

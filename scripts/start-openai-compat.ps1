@@ -62,6 +62,9 @@ if (-not [Environment]::GetEnvironmentVariable("API_TIMEOUT_MS", "Process")) {
 if (-not [Environment]::GetEnvironmentVariable("CLAUDE_CODE_ENABLE_TELEMETRY", "Process")) {
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_ENABLE_TELEMETRY", "0", "Process")
 }
+if (-not [Environment]::GetEnvironmentVariable("USE_BUILTIN_RIPGREP", "Process")) {
+  [Environment]::SetEnvironmentVariable("USE_BUILTIN_RIPGREP", "0", "Process")
+}
 $openaiBase = [Environment]::GetEnvironmentVariable("OPENAI_BASE_URL", "Process")
 if ($openaiBase) {
   [Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $openaiBase, "Process")
@@ -549,6 +552,17 @@ function Ensure-UndiciForProxy() {
   return $false
 }
 
+function Ensure-NodePackagePresent([string]$PackageName) {
+  if (-not $PackageName) { return $false }
+  $oldEap = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  & node -e "require.resolve('$PackageName');process.exit(0)" 2>&1 | Out-Null
+  $ok = ($LASTEXITCODE -eq 0)
+  $ErrorActionPreference = $oldEap
+  if ($ok) { return $true }
+  return (Install-MissingPackage $PackageName)
+}
+
 # Interactive mode (no args): run with attached TTY so Claude does not switch
 # to non-interactive/print path due to piped stdio capture.
 if (-not $CliArgs -or $CliArgs.Count -eq 0) {
@@ -557,6 +571,7 @@ if (-not $CliArgs -or $CliArgs.Count -eq 0) {
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_NON_STREAMING", "0", "Process")
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_OPENAI_COMPAT_ALLOW_STREAMING", "1", "Process")
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_INTERACTIVE", "1", "Process")
+  Ensure-NodePackagePresent "proper-lockfile" | Out-Null
   Ensure-PrivateStubs
   Patch-JsoncParserEsmImports | Out-Null
   Repair-BrokenAnsiToPngShadeBlock | Out-Null
@@ -575,8 +590,8 @@ if (-not $CliArgs -or $CliArgs.Count -eq 0) {
     $interactiveArgs += "--debug"
     $interactiveArgs += "--debug-to-stderr"
   }
-  $disableBare = [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_DISABLE_BARE", "Process")
-  if (-not ($disableBare -and @("1", "true", "yes", "on") -contains $disableBare.ToLowerInvariant())) {
+  $forceBare = [Environment]::GetEnvironmentVariable("OPENAI_COMPAT_FORCE_BARE", "Process")
+  if ($forceBare -and @("1", "true", "yes", "on") -contains $forceBare.ToLowerInvariant()) {
     $interactiveArgs += "--bare"
     Write-Host "Launching interactive mode (bare)..." -ForegroundColor Cyan
   } else {
