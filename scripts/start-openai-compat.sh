@@ -17,6 +17,23 @@ set -a
 source "${ENV_FILE}"
 set +a
 
+# Support accidental trailing KEY=VALUE arguments (e.g.
+#   bash scripts/start-openai-compat.sh --print hello OPENAI_COMPAT_INTERACTIVE_DEBUG=1
+# ) by importing them as env vars and removing them from CLI args.
+normalize_cli_args=()
+if [[ $# -gt 0 ]]; then
+  for arg in "$@"; do
+    if [[ "$arg" =~ ^[A-Za-z_][A-Za-z0-9_]*=.+$ ]]; then
+      key="${arg%%=*}"
+      value="${arg#*=}"
+      export "${key}=${value}"
+      continue
+    fi
+    normalize_cli_args+=("$arg")
+  done
+  set -- "${normalize_cli_args[@]}"
+fi
+
 # Force OpenAI-compatible runtime mode for this launcher.
 export CLAUDE_CODE_USE_OPENAI_COMPAT=1
 export CLAUDE_CODE_FORCE_NON_STREAMING="${CLAUDE_CODE_FORCE_NON_STREAMING:-1}"
@@ -169,6 +186,50 @@ allow_insecure_tls_if_enabled() {
   return 1
 }
 
+is_truthy() {
+  case "${1:-}" in
+    1|true|TRUE|yes|YES|on|ON) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+should_use_safe_repl() {
+  local mode="${OPENAI_COMPAT_SAFE_REPL:-auto}"
+  if is_truthy "${mode}"; then
+    return 0
+  fi
+  case "${mode}" in
+    0|false|FALSE|no|NO|off|OFF)
+      return 1
+      ;;
+  esac
+  # auto: enable on macOS where the Ink/TUI path has been hanging under
+  # some OpenAI-compatible proxy combinations.
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    return 0
+  fi
+  return 1
+}
+
+run_safe_repl() {
+  echo "Launching OpenAI-compatible safe REPL mode..."
+  echo "Type your prompt and press Enter. Type /exit to quit."
+  local line
+  while true; do
+    printf "❯ "
+    IFS= read -r line || break
+    if [[ -z "${line}" ]]; then
+      continue
+    fi
+    case "${line}" in
+      /exit|exit|quit)
+        break
+        ;;
+    esac
+    node "${CLI_DIST}" --print "${line}" || true
+  done
+}
+
 echo "Starting Claude Code with OpenAI-compatible backend..."
 
 patch_jsonc_parser_esm_imports() {
@@ -319,6 +380,10 @@ if [[ $# -eq 0 ]]; then
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
+  if should_use_safe_repl; then
+    run_safe_repl
+    exit 0
+  fi
   interactive_args=()
   case "${OPENAI_COMPAT_INTERACTIVE_DEBUG:-0}" in
     1|true|TRUE|yes|YES|on|ON)
