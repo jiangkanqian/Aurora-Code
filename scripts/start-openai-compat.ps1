@@ -511,6 +511,9 @@ function Install-MissingPackage([string]$PackageName) {
     $ErrorActionPreference = "Continue"
     $npmOut = & npm.cmd install $PackageName --save --prefer-online --offline=false 2>&1
     if ($LASTEXITCODE -eq 0) {
+      # npm install may prune local stub packages as extraneous.
+      # Always re-create private stubs after successful install.
+      Ensure-PrivateStubs
       return $true
     }
 

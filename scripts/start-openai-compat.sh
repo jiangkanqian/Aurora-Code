@@ -325,6 +325,9 @@ install_missing_package() {
   set -e
 
   if [[ ${code} -eq 0 ]]; then
+    # npm install may prune local stub packages as extraneous.
+    # Always re-create private stubs after successful install.
+    ensure_private_stubs
     return 0
   fi
 
@@ -419,9 +422,11 @@ if [[ $# -eq 0 ]]; then
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
-  ensure_private_stubs
   ensure_node_package_present "proper-lockfile" || true
   ensure_node_package_present "modifiers-napi" || true
+  # npm install may prune local stub packages as extraneous. Re-create after
+  # any dependency installation to keep interactive startup stable.
+  ensure_private_stubs
   if should_use_safe_repl; then
     run_safe_repl
     exit 0
@@ -518,6 +523,7 @@ while [[ ${attempt} -le ${max_attempts} ]]; do
     printf '%s\n' "${output}"
     exit 1
   }
+  ensure_private_stubs
   echo "Installed ${pkg}, retrying startup..."
   attempt=$((attempt + 1))
 done
