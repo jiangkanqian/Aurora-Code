@@ -196,7 +196,9 @@ is_truthy() {
 }
 
 should_use_safe_repl() {
-  local mode="${OPENAI_COMPAT_SAFE_REPL:-auto}"
+  # Default to native interactive mode.
+  # Set OPENAI_COMPAT_SAFE_REPL=1 (or auto) to explicitly enable safe REPL.
+  local mode="${OPENAI_COMPAT_SAFE_REPL:-0}"
   if is_truthy "${mode}"; then
     return 0
   fi
@@ -205,7 +207,7 @@ should_use_safe_repl() {
       return 1
       ;;
   esac
-  # auto: enable on macOS where the Ink/TUI path has been hanging under
+  # auto: enable on macOS where the Ink/TUI path may hang under
   # some OpenAI-compatible proxy combinations.
   if [[ "$(uname -s)" == "Darwin" ]]; then
     return 0
@@ -431,7 +433,7 @@ if [[ $# -eq 0 ]]; then
     run_safe_repl
     exit 0
   fi
-  interactive_args=()
+  declare -a interactive_args=()
   case "${OPENAI_COMPAT_INTERACTIVE_DEBUG:-0}" in
     1|true|TRUE|yes|YES|on|ON)
       interactive_args+=(--debug --debug-to-stderr)
@@ -449,7 +451,11 @@ if [[ $# -eq 0 ]]; then
   else
     echo "Launching interactive mode..."
   fi
-  exec node "${CLI_DIST}" "${interactive_args[@]}"
+  if [[ ${#interactive_args[@]} -gt 0 ]]; then
+    exec node "${CLI_DIST}" "${interactive_args[@]}"
+  else
+    exec node "${CLI_DIST}"
+  fi
 fi
 
 # Tolerate common typo: --debug-to-stederr -> --debug-to-stderr
