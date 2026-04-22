@@ -360,6 +360,32 @@ JS
   return 1
 }
 
+ensure_private_stubs() {
+  local pkg_dir="${REPO_ROOT}/node_modules/@ant/claude-for-chrome-mcp"
+  mkdir -p "${pkg_dir}"
+  cat > "${pkg_dir}/package.json" <<'JSON'
+{
+  "name": "@ant/claude-for-chrome-mcp",
+  "version": "0.0.0-local-stub",
+  "type": "module",
+  "main": "./index.js"
+}
+JSON
+  cat > "${pkg_dir}/index.js" <<'JS'
+export const BROWSER_TOOLS = []
+export function createClaudeForChromeMcpServer() {
+  return {
+    connect() {},
+    close() {}
+  }
+}
+export default {
+  BROWSER_TOOLS,
+  createClaudeForChromeMcpServer
+}
+JS
+}
+
 ensure_node_package_present() {
   local pkg="$1"
   if [[ -z "${pkg}" ]]; then
@@ -393,6 +419,7 @@ if [[ $# -eq 0 ]]; then
   ensure_macos_system_ca || true
   enable_node_extra_ca_if_found || true
   allow_insecure_tls_if_enabled || true
+  ensure_private_stubs
   ensure_node_package_present "proper-lockfile" || true
   if should_use_safe_repl; then
     run_safe_repl
