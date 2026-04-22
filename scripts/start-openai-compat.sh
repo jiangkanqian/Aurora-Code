@@ -421,6 +421,7 @@ if [[ $# -eq 0 ]]; then
   allow_insecure_tls_if_enabled || true
   ensure_private_stubs
   ensure_node_package_present "proper-lockfile" || true
+  ensure_node_package_present "modifiers-napi" || true
   if should_use_safe_repl; then
     run_safe_repl
     exit 0

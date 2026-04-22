@@ -572,6 +572,7 @@ if (-not $CliArgs -or $CliArgs.Count -eq 0) {
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_OPENAI_COMPAT_ALLOW_STREAMING", "1", "Process")
   [Environment]::SetEnvironmentVariable("CLAUDE_CODE_FORCE_INTERACTIVE", "1", "Process")
   Ensure-NodePackagePresent "proper-lockfile" | Out-Null
+  Ensure-NodePackagePresent "modifiers-napi" | Out-Null
   Ensure-PrivateStubs
   Patch-JsoncParserEsmImports | Out-Null
   Repair-BrokenAnsiToPngShadeBlock | Out-Null

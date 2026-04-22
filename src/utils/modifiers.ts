@@ -28,9 +28,14 @@ export function isModifierPressed(modifier: ModifierKey): boolean {
   if (process.platform !== 'darwin') {
     return false
   }
-  // Dynamic import to avoid loading native module at top level
-  const { isModifierPressed: nativeIsModifierPressed } =
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('modifiers-napi') as { isModifierPressed: (m: string) => boolean }
-  return nativeIsModifierPressed(modifier)
+  try {
+    // Dynamic import to avoid loading native module at top level
+    const { isModifierPressed: nativeIsModifierPressed } =
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('modifiers-napi') as { isModifierPressed: (m: string) => boolean }
+    return nativeIsModifierPressed(modifier)
+  } catch {
+    // Graceful fallback when native addon is unavailable.
+    return false
+  }
 }
